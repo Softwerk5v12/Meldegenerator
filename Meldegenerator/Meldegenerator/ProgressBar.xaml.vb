@@ -14,39 +14,44 @@ Imports System
 Public Class ProgressBar
 
 
-    Private Sub Rectangle_MouseLeftButtonDown(sender As Object, e As MouseButtonEventArgs)
+    Private Sub Rectangle_MouseLeftButtonDown(sender As Object, e As RoutedEventArgs)
 
 
 
     End Sub
 
-    Private Function MyResolver(sender As Object, e As ResolveEventArgs) As Assembly
-        Dim index As Int32 = e.Name.IndexOf(",")
-        Dim name As String = e.Name.Substring(0, index) + ".dll"
+
+    Private Sub UserControl_Initialized(sender As Object, e As EventArgs)
+
 
 
         Dim filePathReg As RegistryKey
+
         filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns")
 
         If filePathReg Is Nothing Then
             filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns")
         End If
 
-        Dim filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\\V13 SP1"
+        Dim filePath = filePathReg.GetValue("Path").ToString() + "PublicAPI\V13 SP1\Siemens.Engineering.dll"
 
-        Dim PathClass As Path
-        Dim path As String
+        'Dim PathClass As Path
+        'Dim path As String
 
-        path = PathClass.Combine(path1:=filePath, path2:=name)
+        'path = PathClass.Combine(path1:=filePath, path2:=Name)
 
-        Dim fullPath = PathClass.GetFullPath(path)
+        'Dim fullPath = PathClass.GetFullPath(filePath)
 
-        If File.Exists(fullPath) Then
-            Return Assembly.LoadFrom(fullPath)
+        If File.Exists(filePath) Then
+
+
+            Assembly.LoadFrom(filePath)
+            Assembly.LoadFile(filePath)
+
         End If
 
-    End Function
 
+    End Sub
 
 
 
@@ -55,15 +60,6 @@ Public Class ProgressBar
     Public Sub ExportvonTIA(ByVal Pfad As String)
         'Dim MyTiaPortal As New TiaPortal
         'Dim MyProjekt As Project
-
-
-        'Prüfe auf 64Bit version
-
-
-
-
-
-
 
 
 
@@ -90,12 +86,6 @@ Public Class ProgressBar
 
 
     End Sub
-
-
-
-
-
-
 
 
 End Class

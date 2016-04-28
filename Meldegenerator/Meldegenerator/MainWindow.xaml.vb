@@ -1,6 +1,8 @@
 ﻿Imports System.Windows.Threading
 Imports System.IO
 Imports System.Windows.Forms
+Imports Microsoft.Win32
+Imports System.Reflection
 
 Class MainWindow
 
@@ -10,10 +12,6 @@ Class MainWindow
 
 
 
-
-
-
-        '  Dispatcher.BeginInvoke(Sub() PGbar.DoWork(), DispatcherPriority.Background)                                 )
 
     End Sub
 
@@ -30,10 +28,10 @@ Class MainWindow
     End Sub
 
     Private Sub ProjektÖffnen_Click(sender As Object, e As RoutedEventArgs)
-        Dim OFD As New OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
+        Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
+
 
         OFD.ShowDialog()
-
 
         PBar.ExportvonTIA(OFD.FileName)
 
