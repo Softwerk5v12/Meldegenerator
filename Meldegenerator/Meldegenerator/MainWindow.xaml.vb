@@ -11,7 +11,8 @@
 
 
 
-        Dim Fred As String = "fefeff"
+        Dim Fred As String = "Fred"
+
     End Sub
 
 
