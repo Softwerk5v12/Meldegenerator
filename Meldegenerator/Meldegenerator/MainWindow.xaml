@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
         <WrapPanel Name="WPMain">
-            <Button Width="100" Height="70" Margin="10">Öffne Projekt </Button>
+            <Button Width="100" Height="70" Margin="10" Click="Button_Click">Öffne Projekt </Button>
             <Button  Width="100" Height="70" Margin="10">Abbrechen</Button>
             <Button  Width="100" Height="70" Margin="10"></Button>
         </WrapPanel>

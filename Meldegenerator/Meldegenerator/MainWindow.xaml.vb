@@ -10,4 +10,13 @@
         'WPMain.Children.Add(BT)
 
     End Sub
+
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        Dim Auswahl As New TextBox
+        Auswahl.Width = 150
+        Auswahl.Height = 25
+
+        WPMain.Children.Add(Auswahl)
+
+    End Sub
 End Class
