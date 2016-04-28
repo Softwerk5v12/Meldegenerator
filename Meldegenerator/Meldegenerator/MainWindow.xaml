@@ -10,7 +10,7 @@
     <Grid>
         <StackPanel Orientation="Vertical">
         <WrapPanel Name="WPMain">
-            <Button Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Gray" Background="LightGreen">Öffne Projekt </Button>
+            <Button Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Black" Background="LightGreen">Öffne Projekt </Button>
             <Button  Width="100" Height="70" Margin="10"></Button>
             <Button  Width="100" Height="70" Margin="10"></Button>
         </WrapPanel>
