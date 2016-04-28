@@ -63,6 +63,14 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Siemens.Engineering">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Siemens\Automation\Portal V13\PublicAPI\V13 SP1\Siemens.Engineering.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Siemens.Engineering.Hmi">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Siemens\Automation\Portal V13\PublicAPI\V13 SP1\Siemens.Engineering.Hmi.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />

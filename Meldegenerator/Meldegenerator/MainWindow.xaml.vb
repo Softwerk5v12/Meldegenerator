@@ -4,6 +4,8 @@ Imports System.Windows.Forms
 
 Class MainWindow
 
+
+
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
 
@@ -33,7 +35,8 @@ Class MainWindow
         OFD.ShowDialog()
 
 
-        MsgBox(OFD.FileName)
+        PBar.ExportvonTIA(OFD.FileName)
+
 
     End Sub
 
