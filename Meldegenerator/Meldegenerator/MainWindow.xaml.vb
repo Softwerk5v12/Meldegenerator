@@ -31,9 +31,18 @@ Class MainWindow
         Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
 
 
+
+
+
+
         OFD.ShowDialog()
 
-        PBar.ExportvonTIA(OFD.FileName)
+
+        If Not OFD.FileName = "" Then
+            PBar.ExportvonTIA(OFD.FileName)
+        Else
+            MsgBox("Projekt schließen danach Meldegenerierung erneut ausführen", MsgBoxStyle.Critical)
+        End If
 
 
     End Sub

@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:Meldegenerator"
              mc:Ignorable="d"   
              Initialized="UserControl_Initialized"
+             Loaded="UserControl_Loaded"
             >
     <Grid>
         <Rectangle  RadiusX="10" RadiusY="10" Height="40" Fill="#222229" MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"  ></Rectangle>
