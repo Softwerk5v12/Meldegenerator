@@ -39,7 +39,7 @@ Class MainWindow
 
 
         If Not OFD.FileName = "" Then
-            PBar.ExportvonTIA(OFD.FileName)
+            Dispatcher.BeginInvoke(Sub() PBar.ExportvonTIA(OFD.FileName))
         Else
             MsgBox("Projekt schließen danach Meldegenerierung erneut ausführen", MsgBoxStyle.Critical)
         End If
