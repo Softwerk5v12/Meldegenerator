@@ -36,5 +36,10 @@ Class MainWindow
         MsgBox(OFD.FileName)
 
     End Sub
+
+    Dim _XML As New XML
+    Private Sub BT_XML_Click(sender As Object, e As RoutedEventArgs)
+        _XML.LoadXML()
+    End Sub
 End Class
 

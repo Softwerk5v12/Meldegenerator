@@ -20,4 +20,8 @@
 
 
     End Function
+
+    Private Sub UserControl_Initialized(sender As Object, e As EventArgs)
+
+    End Sub
 End Class

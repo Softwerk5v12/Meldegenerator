@@ -1,0 +1,1592 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Document>
+  <DocumentInfo>
+    <Created>2016-04-28T11:01:05.7529791Z</Created>
+    <ExportSetting>None</ExportSetting>
+    <InstalledProducts>
+      <Product>
+        <DisplayName>Totally Integrated Automation Portal</DisplayName>
+        <DisplayVersion>V13 SP1 Update 7</DisplayVersion>
+      </Product>
+      <OptionPackage>
+        <DisplayName>TIA Portal Openness</DisplayName>
+        <DisplayVersion>V13 SP1 Update 4</DisplayVersion>
+      </OptionPackage>
+      <Product>
+        <DisplayName>SINAMICS Startdrive</DisplayName>
+        <DisplayVersion>V13 SP1 Update 1</DisplayVersion>
+      </Product>
+      <Product>
+        <DisplayName>STEP 7 Professional</DisplayName>
+        <DisplayVersion>V13 SP1 Update 7</DisplayVersion>
+      </Product>
+      <OptionPackage>
+        <DisplayName>STEP 7 Safety</DisplayName>
+        <DisplayVersion>V13 SP1 Update 4</DisplayVersion>
+      </OptionPackage>
+      <Product>
+        <DisplayName>WinCC Advanced</DisplayName>
+        <DisplayVersion>V13 SP1 Update 7</DisplayVersion>
+      </Product>
+    </InstalledProducts>
+  </DocumentInfo>
+  <SW.DataBlock ID="0">
+    <AttributeList>
+      <AutoNumber>false</AutoNumber>
+      <DatablockType>SharedDB</DatablockType>
+      <Interface><Sections xmlns="http://www.siemens.com/automation/Openness/SW/Interface/v1">
+  <Section Name="Static">
+    <Member Name="End_Adresse" Datatype="UInt">
+      <Comment>
+        <MultiLanguageText Lang="de-DE">********  Adresse Endekennung = DB-Länge</MultiLanguageText>
+      </Comment>
+      <StartValue>186</StartValue>
+    </Member>
+    <Member Name="M_" Datatype="Struct">
+      <Comment>
+        <MultiLanguageText Lang="de-DE">Meldungen allgemein</MultiLanguageText>
+      </Comment>
+      <Member Name="PN_Fehler" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Profinet Fehler</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA1-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 1-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA1-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 1-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA2-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 2-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA2-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 2-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA2-2Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 2-2 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA2-2 FR7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 2-2 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA3-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 3-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA3-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 3-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA4-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 4-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA4-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 4-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA5-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 5-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA5-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 5-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA6-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 6-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA6-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 6-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA7-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 7-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA7-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 7-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA8-1Hand" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 8-1 Handbetrieb</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="BA8-1 FRE7" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Betriebsart 8-1 Überbrückung Verriegelung FRE7</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="SV1_Online" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Bedienpult SV1 nicht Online</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="I01_Online" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Bedienpult I01 nicht Online</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="100I11ZuTr" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Zutrittsanforderung am Panel 100I11</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="100I21ZuTr" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Zutrittsanforderung am Panel 100I21</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 Soll-Pos im Konturenbereich von Achsgruppe FG123</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 Soll_Position im Konturenbereich von FG116</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 Soll-Pos im Konturenbereich von Achsgruppe FG126</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 Soll_Position im Konturenbereich von FG113</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 Soll-Pos im Konturenbereich von Achsgruppe FG133</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 Soll-Pos im Konturenbereich von Achsgruppe FG113</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 Soll_Position im Konturenbereich von FG126</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 Soll-Pos im Konturenbereich von Achsgruppe FG136</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 Soll-Pos im Konturenbereich von Achsgruppe FG116</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 Soll_Position im Konturenbereich von FG123</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 Soll_Position im Konturenbereich von FG136</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 Soll-Pos im Konturenbereich von Achsgruppe FG123</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 Soll-Pos im Konturenbereich von Achsgruppe FG143</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 Soll_Position im Konturenbereich von FG133</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 Soll-Pos im Konturenbereich von Achsgruppe FG126</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 Soll-Pos im Konturenbereich von Achsgruppe FG146</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 Soll_Position im Konturenbereich von FG146</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 Soll-Pos im Konturenbereich von Achsgruppe FG133</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 Soll-Pos im Konturenbereich von Achsgruppe FG153</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 Soll_Position im Konturenbereich von FG143</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 Soll-Pos im Konturenbereich von Achsgruppe FG136</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 Soll-Pos im Konturenbereich von Achsgruppe FG156</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 Soll_Position im Konturenbereich von FG156</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 Soll-Pos im Konturenbereich von Achsgruppe FG143</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156_Verr_Y1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 Soll_Position im Konturenbereich von FG153</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156_Verr_Y2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 Soll-Position im Konturenbereich des WST</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156_Verr_Y3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156_Verr_N" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 Soll-Pos im Konturenbereich von Achsgruppe FG146</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156_Verr_P" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 NV</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="43006LM" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Lückenmeldung von FTS</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="MA0401LM" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Lückenmeldung von EHB</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="D4Betr" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">M43005 D4-Betrieb LsP AUS</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="FrgEinfahrt" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">keine Freigabe für Einfahrt an 43006 &amp; MA0401</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="FrgSenken" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">keine Freigabe für senken an MA0401</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="FrgAusfahrt" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">keine Freigabe für Ausfahrt an 43006 &amp; MA0401</MultiLanguageText>
+        </Comment>
+      </Member>
+    </Member>
+    <Member Name="S_" Datatype="Struct">
+      <Comment>
+        <MultiLanguageText Lang="de-DE">Störungen  allgemein</MultiLanguageText>
+      </Comment>
+      <Member Name="PN_Fehler" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Profinet Fehler</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SV1SFN1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt Schaltschrank</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="I01SFN1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt Pult I01SFN1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="I02SFN1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt Mobile-Panel I02SFN1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101I13SFN1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt Schutztür FG101 links</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102I13SFN1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt Schutztür FG102 rechts</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="M43001_NH" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt von M43001 EHB</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="M43006_NH" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Not-Halt von M43006 FT</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101BGS3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schaltleiste betätigt 101BGS3 Einfahrt Li</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101BGS4" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schaltleiste betätigt 101BGS4 Ausfahrt Li</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101BGS5" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schaltleiste betätigt 101BGS5 Ausfahrt Li</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102BGS3" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schaltleiste betätigt 102BGS3 Einfahrt Re</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102BGS4" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schaltleiste betätigt 102BGS4 Ausfahrt Re</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102BGS5" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schaltleiste betätigt 102BGS5 Ausfahrt Re</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101BGS1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Scannerbereich gestört links 101BGS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102BGS1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Scannerbereich gestört rechts 102BGS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101BGS1ERR" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Scanner verschmutzt links 101BGS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102BGS1ERR" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Scanner verschmutzt rechts 102BGS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101BGS2X1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schutzgitter offen Links 101BGS2</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102BGS2X1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Schutzgitter offen Rechts 102BGS2</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="M0401_PeSi" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">M0401 EHB PeSi</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="43006_PeSi" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">43006 Fördertechnik PeSi</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SV1XDF1_SIFA" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Sammelmeldung Sicherungsfall</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS1153SR1FB1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Sicherungsfall VR AMT 1SS1153SR1FB1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS2156SR1FB1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Sicherungsfall VR AMT 1SS2156SR1FB1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1BS1KFS1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Switch 1BS1KFS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1BS1KFS2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Switch 1BS1KFS2</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS1KFS1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Switch 1SS1KFS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS2KFS1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Switch 1SS2KFS1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1103ZE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG103</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1106ZE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG106</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2113VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG113_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2113VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG113_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2123VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG123_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2123VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG123_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2133VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG133_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2133VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG133_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2143VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG143_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2143VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG143_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2153VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG153_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2153VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG153_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3116VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG116_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3116VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG116_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3126VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG126_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3126VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG126_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3136VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG136_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3136VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG136_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3146VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG146_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3146VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG146_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3156VE1FCM1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG156_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3156VE1FCM2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Motorschutz FU FG156_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1103ZE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG103</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1106ZE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG106</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2113VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG113_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2113VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG113_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2123VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG123_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2123VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG123_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2133VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG133_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2133VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG133_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2143VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG143_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2143VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG143_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2153VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG153_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2153VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG153_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3116VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG116_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3116VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG116_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3126VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG126_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3126VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG126_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3136VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG136_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3136VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG136_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3146VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG146_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3146VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG146_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3156VE1FCL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG156_X</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3156VE1FCL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Leistungsschutz Bremse FG156_Y</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1EC01" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS1 Störung Klimagerät</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3EC01" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3 Störung Klimagerät</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS1QA1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1SS1QA1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS1QA2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1SS1QA2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS2QA1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1SS2QA1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1SS2QA2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1SS2QA2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1103VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS1103VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS1106VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS1106VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2113VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2113VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2113VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2113VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2123VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2123VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2123VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2123VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2133VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2133VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2133VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2133VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2143VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2143VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2143VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2143VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2153VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2153VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS2153VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS2153VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3116VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3116VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3116VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3116VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3126VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3126VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3126VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3126VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3136VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3136VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3136VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3136VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3146VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3146VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3146VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3146VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3156VE1QAL1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3156VE1QAL1 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="1AS3156VE1QAL2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">1AS3156VE1QAL2 Störung Feedbacküberwachung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="M0401ERR_RCV" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Fehler sicherer Datenempfang 43001</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="43006ERR_RCV" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Fehler sicherer Datenempfang 43006</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="M0401ERR_SEND" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Fehler sichere Daten senden 43001</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="43006ERR_SEND" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Fehler sichere Daten senden 43006</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="103ZE1BGG1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG103 Riemenrissüberwachung vorne</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="103ZE1BGG2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG103 Riemenrissüberwachung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="106ZE1BGG1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG106 Riemenrissüberwachung vorne</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="106ZE1BGG2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG106 Riemenrissüberwachung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101SN1BGT1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101 Kollisionsüberwachung HA-Dämpfer Stufe 1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101SN1BGT2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101 Kollisionsüberwachung HA-Dämpfer Stufe 2</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102SN1BGT1" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102 Kollisionsüberwachung HA-Dämpfer Stufe 1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102SN1BGT2" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102 Kollisionsüberwachung HA-Dämpfer Stufe 2</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG113</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG116</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG123</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG126</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG133</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG136</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG143</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG146</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG153</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156_Koll" Datatype="Bool">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kollisionsüberwachung FG156</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="LSp_1" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 1</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE"> Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE"> F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_2" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 2</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE"> Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE"> F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_3" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 3</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_4" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 4</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_5" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 5</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_6" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 6</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_7" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 7</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="LSp_8" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störungen LSp 8</MultiLanguageText>
+        </Comment>
+        <Member Name="StFBack" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg Störung Feedback-Überwachung</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="StBgrPas" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">von SiProg F-Baugruppe passiviert</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="E2" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Sicherheit überbrückt</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+      <Member Name="ZLT" Datatype="&quot;M_ZLT&quot;" />
+      <Member Name="Res_" Datatype="Array[1..6] of Byte" />
+      <Member Name="101VG1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101VG1 Schutztüre Einfahrt</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101VG1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101VG1 Schutztüre Ausfahrt</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101AN1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101AN1 ZB Absteckung Schwimmbereich</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101AN2KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101AN1 ZB Abstützung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101ZE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101ZE1 Y-Zustellung WST Zentrierung vorne</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101ZE1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101ZE1 Z-Zustellung WST Zentrierung vorne</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101VE1 X-Zustellung WST Zentrierung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101ZE2KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101ZE2 Y-Zustellung WST Zentrierung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101ZE2KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101ZE2 Z-Zustellung WST Zentrierung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101SN1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101SN1 Betätigung Stufe 1 HA-Dämpfer</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101SN1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101SN1 Betätigung Stufe 2 HA-Dämpfer</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101VI1KKP01" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101VI1 Steuerluft ein</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101VI2KKP01" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101VI2 Steuerluft ein</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102VG1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102VG1 Schutztüre Einfahrt</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102VG1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102VG1 Schutztüre Ausfahrt</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102AN1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102AN1 ZB Absteckung Schwimmbereich</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102AN2KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102AN1 ZB Abstützung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102ZE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102ZE1 Y-Zustellung WST Zentrierung vorne</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102ZE1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102ZE1 Z-Zustellung WST Zentrierung vorne</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102VE1 X-Zustellung WST Zentrierung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102ZE2KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102ZE2 Y-Zustellung WST Zentrierung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102ZE2KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102ZE2 Z-Zustellung WST Zentrierung hinten</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102SN1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102SN1 Betätigung Stufe 1 HA-Dämpfer</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102SN1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102SN1 Betätigung Stufe 1 HA-Dämpfer</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102VI1KKP01" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102VI1 Steuerluft ein</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102VI2KKP01" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102VI2 Steuerluft ein</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="104VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG104VE1 Betätigung Tankeinfüllrohr einschwenken</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="104VE1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG104VE1 Betätigung Tankeinfüllrohr entriegelung</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113VE1 Z-Zustellung Schrauber LS01</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113VE1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113VE1 zusätzliche X-Verstellung Schrauber LS01</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116VE1 Z-Zustellung Schrauber LS01</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116VE1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116VE1 zusätzliche X-Verstellung Schrauber LS01</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123VE1 Z-Zustellung Schrauber LS02</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126VE1 Z-Zustellung Schrauber LS02</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133VE1 Z-Zustellung Schrauber LS03</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136VE1 Z-Zustellung Schrauber LS03</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143VE1 Z-Zustellung Schrauber LS04</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146VE1 Z-Zustellung Schrauber LS04</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153VE1 Z-Zustellung Schrauber LS05</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153VE1KKP12" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153VE1 Winkelverstellung Schrauber LS05</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156VE1KKP11" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156VE1 Z-Zustellung Schrauber LS05</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="103MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG103 Zustellung Schraubstation li.</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="106MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG106 Zustellung Schraubstation re.</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 Achse X1.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="113MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG113 Achse Y1.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 Achse X1.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="116MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG116 Achse Y1.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 Achse X2.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="123MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG123 Achse Y2.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 Achse X2.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="126MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG126 Achse Y2.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 Achse X3.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="133MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG133 Achse Y3.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 Achse X3.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="136MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG136 Achse Y3.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 Achse X4.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="143MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG143 Achse Y4.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 Achse X4.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="146MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG146 Achse Y4.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 Achse X5.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="153MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG153 Achse Y5.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156MA1" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 Achse X5.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="156MA2" Datatype="&quot;M_SEW_EBPos&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG156 Achse Y5.1</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101KKP01" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG101 Wartungseinheit</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="102KKP01" Datatype="&quot;M_Vor/Ruek&quot;">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">FG102 Wartungseinheit</MultiLanguageText>
+        </Comment>
+      </Member>
+      <Member Name="101LS01" Datatype="&quot;M_RFID&quot;" />
+      <Member Name="StoKomKon" Datatype="Struct">
+        <Comment>
+          <MultiLanguageText Lang="de-DE">Störung Kommunikation</MultiLanguageText>
+        </Comment>
+        <Member Name="MA0401" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Störung Kommunikation zur MA0401 (EHB)</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="43006" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Störung Kommunikation zur 43006 (FTS-Kurs)</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="Ident_MA43005" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Störung Kommunikation Idend (Daten für Hochzeit)</MultiLanguageText>
+          </Comment>
+        </Member>
+        <Member Name="Ident_43006" Datatype="Bool">
+          <Comment>
+            <MultiLanguageText Lang="de-DE">Störung Kommunikation Idend (Daten für FTS)</MultiLanguageText>
+          </Comment>
+        </Member>
+      </Member>
+    </Member>
+    <Member Name="Ende" Datatype="Byte">
+      <Comment>
+        <MultiLanguageText Lang="de-DE">********  Endekennung</MultiLanguageText>
+      </Comment>
+    </Member>
+  </Section>
+</Sections></Interface>
+      <MemoryLayout>Standard</MemoryLayout>
+      <Name>VM</Name>
+      <Number>260</Number>
+      <ProgrammingLanguage>DB</ProgrammingLanguage>
+      <Type>DB</Type>
+    </AttributeList>
+  </SW.DataBlock>
+</Document>
