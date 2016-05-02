@@ -77,9 +77,10 @@ Class MainWindow
                     Return MyAssembly
                 Else
                     MsgBox("TIA-Openness nicht installiert!, Bitte installieren", MsgBoxStyle.Critical)
-                    Me.Close()
                 End If
 
+            ElseIf strAssmbName.FullName.Contains("Sienems") Then
+                MsgBox("TIA-Openness nicht installiert!, Bitte installieren", MsgBoxStyle.Critical)
             End If
         Next
 
@@ -97,7 +98,12 @@ Class MainWindow
 
         If Not OFD.FileName = "" Then
 
-            bgw.RunWorkerAsync(OFD.FileName)
+            Try
+                bgw.RunWorkerAsync(OFD.FileName)
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+
 
 
 
@@ -125,9 +131,6 @@ Class MainWindow
 
 
         Dim MyTiaPortal = New TiaPortal(TiaPortalMode.WithoutUserInterface)
-
-
-
 
 
         bgw.ReportProgress(20)
@@ -314,6 +317,8 @@ Class MainWindow
 
 
 
+
+
     End Sub
 
 
@@ -395,11 +400,11 @@ Class MainWindow
 
 
     Private Sub bgw_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgw.RunWorkerCompleted
-
-
-        PBar.LBAnzahlTITEL.Content = "Fertig"
-
-
+        If PBar.PGBarDaten.Value = 0 Or PBar.PGBarDaten.Value = 10 Or PBar.PGBarDaten.Value = 20 Then
+            MsgBox("Fehler:" & vbNewLine & "- TIA Openness nicht installiert" & vbNewLine & "- TIA Openness Benutzereinstellungen fehlen" & vbNewLine & "- .Net Framework 4.0 oder höher installieren")
+        Else
+            PBar.LBAnzahlTITEL.Content = "Fertig"
+        End If
     End Sub
 
     Private Sub Abbrechen_Click(sender As Object, e As RoutedEventArgs)
