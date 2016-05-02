@@ -15,7 +15,6 @@
                 <Button  Width="100" Height="70" Margin="10"/>
                 <Button x:Name="Abbrechen" Click="Abbrechen_Click" Width="100" Height="70" Margin="10" Content="Abbrechen"/>
             </WrapPanel>
-            <Label x:Name="Status" Content=""/>
             <local:ProgressBar x:Name="PBar" />
         </StackPanel>
     </Grid>
