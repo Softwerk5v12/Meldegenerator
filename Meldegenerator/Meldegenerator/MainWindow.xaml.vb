@@ -41,5 +41,9 @@ Class MainWindow
     Private Sub BT_XML_Click(sender As Object, e As RoutedEventArgs)
         _XML.LoadXML()
     End Sub
+
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        _XML.Write_Excel()
+    End Sub
 End Class
 
