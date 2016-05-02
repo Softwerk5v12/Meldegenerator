@@ -3,43 +3,104 @@ Imports System.IO
 Imports System.Windows.Forms
 Imports Microsoft.Win32
 Imports System.Reflection
+Imports System.ComponentModel
+Imports Siemens.Engineering
+Imports Siemens.Engineering.Hmi
+Imports Siemens.Engineering.HW
+Imports Siemens.Engineering.SW
+Imports Siemens.Engineering.Compiler
+Imports System
 
 Class MainWindow
 
+    Dim WithEvents bgw As New BackgroundWorker
+    Public Übergabeparameter As New List(Of Object)
 
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
 
 
-
-    End Sub
-
-
-
-
-    Private Sub TiaProjektauswählen()
-        ' Dim OR As open
+        'erlaubt zugriff auf die windows form
+        bgw.WorkerReportsProgress = True
+        'erlaubt unterbrechung des bgw z.b. wenn das programm beendet wird
+        bgw.WorkerSupportsCancellation = True
 
 
-        'PGbar.OpenProjekt()
+        AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
 
 
     End Sub
+
+
+
+
+    Function MyResolveEventHandler(ByVal sender As Object,
+                               ByVal args As ResolveEventArgs) As [Assembly]
+        'This handler is called only when the common language runtime tries to bind to the assembly and fails.        
+
+        'Retrieve the list of referenced assemblies in an array of AssemblyName.
+        Dim objExecutingAssemblies As [Assembly]
+        objExecutingAssemblies = [Assembly].GetExecutingAssembly()
+        Dim arrReferencedAssmbNames() As AssemblyName
+        arrReferencedAssmbNames = objExecutingAssemblies.GetReferencedAssemblies()
+
+        'Loop through the array of referenced assembly names.
+        Dim strAssmbName As AssemblyName
+        For Each strAssmbName In arrReferencedAssmbNames
+
+            'Look for the assembly names that have raised the "AssemblyResolve" event.
+            If (strAssmbName.FullName.Substring(0, strAssmbName.FullName.IndexOf(",")) = args.Name.Substring(0, args.Name.IndexOf(","))) Then
+
+                Dim filePathReg As RegistryKey
+
+                filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns")
+
+                If filePathReg Is Nothing Then
+                    filePathReg = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Siemens\\Automation\\_InstalledSW\\TIAP13\\TIA_Opns")
+                End If
+
+
+                'Build the path of the assembly from where it has to be loaded.
+                Dim strTempAssmbPath As String
+                strTempAssmbPath = filePathReg.GetValue("Path").ToString() & "\PublicAPI\V13 SP1\" & args.Name.Substring(0, args.Name.IndexOf(",")) & ".dll"
+
+
+                If File.Exists(strTempAssmbPath) Then
+
+                    Dim MyAssembly As [Assembly]
+
+                    'Load the assembly from the specified path. 
+                    MyAssembly = [Assembly].LoadFrom(strTempAssmbPath)
+
+                    'Return the loaded assembly.
+                    Return MyAssembly
+                Else
+                    MsgBox("TIA-Openness nicht installiert!, Bitte installieren", MsgBoxStyle.Critical)
+                    Me.Close()
+                End If
+
+            End If
+        Next
+
+    End Function
+
+
+
 
     Private Sub ProjektÖffnen_Click(sender As Object, e As RoutedEventArgs)
         Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
-
-
-
-
 
 
         OFD.ShowDialog()
 
 
         If Not OFD.FileName = "" Then
-            Dispatcher.BeginInvoke(Sub() PBar.ExportvonTIA(OFD.FileName))
+
+            bgw.RunWorkerAsync(OFD.FileName)
+
+
+
         Else
             MsgBox("Projekt schließen danach Meldegenerierung erneut ausführen", MsgBoxStyle.Critical)
         End If
@@ -47,6 +108,312 @@ Class MainWindow
 
     End Sub
 
+
+
+
+
+
+    Public Sub bgw_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bgw.DoWork
+
+        Dim Err_Meldebaustein As Boolean = True
+
+        Dim pfad As String = Convert.ToString(e.Argument)
+
+        bgw.ReportProgress(10)
+        System.Threading.Thread.Sleep(100)
+
+
+
+        Dim MyTiaPortal = New TiaPortal(TiaPortalMode.WithoutUserInterface)
+
+
+
+
+
+        bgw.ReportProgress(20)
+        System.Threading.Thread.Sleep(100)
+
+        Dim MyProjekt = MyTiaPortal.Projects.Open(Pfad)
+
+
+        Dim CPU_Namen As New List(Of String)
+
+
+
+        Dim Ausgewaehlte_CPU_Objekt As ControllerTarget
+
+        Dim Ausgewaehlte_CPU_Liste As New List(Of ControllerTarget)
+
+        bgw.ReportProgress(30)
+        System.Threading.Thread.Sleep(100)
+
+        For Each Device In MyProjekt.Devices
+
+
+            If Device.Name.Contains("S71500") Or Device.Name.Contains("S71200") Then
+
+                Dim devitemAggregation As IDeviceItemAggregation
+                Dim devitemassosiation As IDeviceItemAssociation
+                Dim devitem As IDeviceItem
+
+                devitemAggregation = Device.DeviceItems
+                devitemassosiation = Device.Elements
+
+                'CPUs im Projekt suchen
+                For Each devitem In devitemAggregation
+                    If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
+
+                        CPU_Namen.Add(devitem.Name)
+                        Ausgewaehlte_CPU_Liste.Add(devitem)
+
+                    End If
+                Next
+
+            End If
+
+        Next
+
+
+        bgw.ReportProgress(40)
+        System.Threading.Thread.Sleep(100)
+
+        'Aufruf Backgroundworker Progrss changed für bearbeitung der Oberfläche
+
+
+        Übergabeparameter.Clear()
+
+
+
+        Übergabeparameter.Add("CPU_ausw")
+        Übergabeparameter.Add(CPU_Namen)
+
+
+
+
+        bgw.ReportProgress(45)
+        Do Until Übergabeparameter.Count = 3
+            System.Threading.Thread.Sleep(5000)
+        Loop
+
+
+
+
+        Dim CPU_Nr As Integer
+
+
+        CPU_Nr = Übergabeparameter.Item(2)
+
+        Übergabeparameter.Clear()
+
+        Ausgewaehlte_CPU_Objekt = Ausgewaehlte_CPU_Liste.ElementAt(CPU_Nr)
+
+
+
+        'Exportordner Erstellen und Pfad vorgeben
+
+        bgw.ReportProgress(50)
+        System.Threading.Thread.Sleep(100)
+
+        Dim XML_pfad As String
+
+
+        XML_pfad = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) & "\Meldegenerator_XML"
+
+
+        System.IO.Directory.CreateDirectory(XML_pfad)
+        System.IO.Directory.CreateDirectory(XML_pfad & "\Datentypen")
+
+
+        'alle Datentypen löschen
+        For Each file In System.IO.Directory.GetFiles(XML_pfad & "\Datentypen")
+
+            System.IO.File.Delete(file)
+
+        Next
+
+        'leeren Ordner Datentypen löschen
+
+        System.IO.File.Delete(XML_pfad & "\Meldungen.xml")
+
+
+
+
+        bgw.ReportProgress(60)
+        System.Threading.Thread.Sleep(100)
+
+        'Baustein Suchen und Exportieren
+
+        Dim Bausteinordner As ProgramblockSystemFolder
+
+
+
+        Bausteinordner = Ausgewaehlte_CPU_Objekt.ProgramblockFolder
+
+        For Each Baustein In Bausteinordner.Blocks
+
+            If Baustein.Name = "Meldungen" Then
+                If Baustein.IsConsistent Then
+                    Try
+                        Baustein.Export(XML_pfad & "\" & Baustein.Name & ".xml", ExportOptions.None)
+
+                    Catch ex As Exception
+                        MsgBox(ex.ToString)
+                    End Try
+                Else
+                    MsgBox("Meldebaustein nicht übersetzt")
+                End If
+                Err_Meldebaustein = False
+            End If
+
+        Next
+
+        If Err_Meldebaustein Then
+            MsgBox("Kein Meldebaustein im Programm-Ordner gefunden. Bitte Baustein 'Meldungen' im Bausteinordner (ohne Unterordner) anlegen ")
+        End If
+
+
+        bgw.ReportProgress(65)
+        System.Threading.Thread.Sleep(100)
+
+
+        'Datentypen exportieren
+        Dim Datentyp_Systemordner As ControllerDatatypeSystemFolder
+        Dim i As Int32
+
+        Datentyp_Systemordner = Ausgewaehlte_CPU_Objekt.ControllerDatatypeFolder
+
+        i = 1
+
+        For Each Folder In Datentyp_Systemordner.Folders
+            If Folder.Name = "Meldungen" Then
+                For Each Datatype In Folder.Datatypes
+                    If Datatype.IsConsistent Then
+                        Try
+                            Datatype.Export(XML_pfad & "\Datentypen\Datentyp_" & i & ".xml", ExportOptions.None)
+                            i = i + 1
+                        Catch ex As Exception
+                            MsgBox(ex.ToString)
+                        End Try
+                    Else
+                        MsgBox("Datentyp: " & Datatype.Name & " nicht übersetzt")
+                    End If
+                Next
+            End If
+        Next
+
+
+        bgw.ReportProgress(70)
+        System.Threading.Thread.Sleep(100)
+
+        MyProjekt.Close()
+
+        bgw.ReportProgress(75)
+        System.Threading.Thread.Sleep(100)
+
+        MyTiaPortal.Dispose()
+
+
+
+    End Sub
+
+
+
+
+
+
+    Public Sub bgw_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bgw.ProgressChanged
+        Dim CPUA As New CPUAuswahl
+
+        If Übergabeparameter.Count > 0 Then
+            If Übergabeparameter.Item(0) = "CPU_ausw" Then
+                Dim Namensliste As New List(Of String)
+                Namensliste = Übergabeparameter.Item(1)
+
+                CPUA.Namen = Namensliste
+                'Wurden Mehrere CPUs im Projekt gefunden, muss eine ausgewählt werden. Ansonsten wird automatisch die eine CPU genommen
+                If Namensliste.Count > 1 Then
+                    CPUA.ShowDialog()
+                    Übergabeparameter.Add(CPUA.Rückgabe)
+                Else
+                    Übergabeparameter.Add(0)
+                End If
+
+            End If
+            End If
+
+
+        If e.ProgressPercentage = 10 Then
+            PBar.LBAnzahlTITEL.Content = "Öffne TIA"
+        End If
+
+        If e.ProgressPercentage = 20 Then
+            PBar.LBAnzahlTITEL.Content = "Öffne Projekt in TIA"
+        End If
+
+        If e.ProgressPercentage = 30 Then
+            PBar.LBAnzahlTITEL.Content = "Suche Steuerungen im Projekt"
+        End If
+
+        If e.ProgressPercentage = 40 Then
+            PBar.LBAnzahlTITEL.Content = "Steuerungen listen / auswählen"
+        End If
+
+        If e.ProgressPercentage = 45 Then
+            PBar.LBAnzahlTITEL.Content = "Gewählte Stuerung wird ausgelesen"
+        End If
+
+        If e.ProgressPercentage = 50 Then
+            PBar.LBAnzahlTITEL.Content = "Erstelle XML Export-Pfad"
+        End If
+
+        If e.ProgressPercentage = 60 Then
+            PBar.LBAnzahlTITEL.Content = "Exportiere Baustein"
+        End If
+
+        If e.ProgressPercentage = 65 Then
+            PBar.LBAnzahlTITEL.Content = "Exportiere Datentypen"
+        End If
+
+        If e.ProgressPercentage = 70 Then
+            PBar.LBAnzahlTITEL.Content = "Schließe Projekt in TIA"
+        End If
+
+        If e.ProgressPercentage = 75 Then
+            PBar.LBAnzahlTITEL.Content = "Schließe TIA Portal"
+        End If
+
+
+        PBar.PGBarDaten.Value = e.ProgressPercentage
+
+
+
+
+
+    End Sub
+
+
+
+
+    Private Sub bgw_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgw.RunWorkerCompleted
+
+
+        PBar.LBAnzahlTITEL.Content = "Fertig"
+
+
+    End Sub
+
+    Private Sub Abbrechen_Click(sender As Object, e As RoutedEventArgs)
+
+        bgw.CancelAsync()
+
+
+        PBar.LBAnzahlTITEL.Content = "Wird Abgebrochen"
+        PBar.PGBarDaten.Value = 100
+
+
+
+
+    End Sub
 
 End Class
 
