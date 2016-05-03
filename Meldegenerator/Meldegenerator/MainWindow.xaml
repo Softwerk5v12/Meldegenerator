@@ -14,7 +14,7 @@
             <Button Name="BT_XML" Click="BT_XML_Click"  Width="100" Height="70" Margin="10" Background="LightBlue">XML</Button>
             <Button Click="Button_Click"  Width="100" Height="70" Margin="10"></Button>
         </WrapPanel>
-          <local:ProgressBar x:Name="PBar" />
+          <local:ProgressBar x:Name="PBar"  />
         </StackPanel>
     </Grid>
 </Window>

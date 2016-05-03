@@ -6,6 +6,7 @@ Class MainWindow
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
+        AddHandler _XML.StatusChaged, AddressOf StatusChanged
 
 
 
@@ -15,6 +16,18 @@ Class MainWindow
 
     End Sub
 
+    Private Sub StatusChanged()
+        PBar.LBAnzahlTITEL.Content = _XML.Status
+        Me.Dispatcher.Invoke(Windows.Threading.DispatcherPriority.ContextIdle, Function() 0)
+    End Sub
+    Public Sub New()
+
+        ' This call is required by the designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+    End Sub
 
 
 
@@ -39,11 +52,11 @@ Class MainWindow
 
     Dim _XML As New XML
     Private Sub BT_XML_Click(sender As Object, e As RoutedEventArgs)
-        _XML.LoadXML()
+        _XML.RunXML()
     End Sub
 
     Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
-        _XML.Write_Excel()
+
     End Sub
 End Class
 

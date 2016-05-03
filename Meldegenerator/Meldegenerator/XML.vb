@@ -9,10 +9,16 @@ Imports Excel = Microsoft.Office.Interop.Excel
 
 
 Public Class XML
+    Public Event StatusChaged()
+    Private Sub _StatusChanged(ByVal _Status As String)
+        Status = _Status
+        RaiseEvent StatusChaged()
+    End Sub
 
     Property CPUnummer As Integer = 1
     Property DBNummer As Integer = 260
 
+    Property Status As String
 
 
     Dim Meldungen As New List(Of HMIAlarms)
@@ -23,35 +29,55 @@ Public Class XML
     Dim TagName As String = "Trigger_AT_" & CPUnummer.ToString & "_DB"
 
     Friend XMLFile As XDocument
-    Public Sub LoadXML()
+    Public Sub RunXML()
 
+        _StatusChanged("Load XML")
 
         For Each file As String In Directory.GetFiles(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Datentypen")
             GetDatatyp(file)
         Next
-
-        XMLFile = XDocument.Load("C:\Users\m.baminger\Documents\Meldegenerator_XML\Meldungen.xml")
-
+        Try
+            XMLFile = XDocument.Load(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Meldungen.xml")
+        Catch ex As Exception
+            _StatusChanged("Fehler beim XML öffnen")
+        End Try
         GetHMIMeldungen()
 
-        For Each f As HMIAlarms In Datentypen
-            Console.WriteLine(f.AlarmText)
-        Next
 
-        '   Next
 
+        Write_Excel()
 
 
 
     End Sub
 
+
+    Private AddresssWord As Integer = 0
+    Private AddressBit As Integer = 8
+    Private AddressTag As String
 
     Private Sub CountDBAdresse()
 
+        _StatusChanged("Count DB Address")
+
+        If AddressBit >= 16 Then
+            AddressBit = 0
+
+        Else
+            AddressBit = AddressBit + 1
+        End If
+
+        If AddressBit = 8 Then
+            AddresssWord = AddresssWord + 2
+        End If
+
+        AddressTag = TagName & DBNummer & ".DBW" & AddresssWord
     End Sub
 
 
+
     Private Sub GetHMIMeldungen()
+        _StatusChanged("XML initialisieren")
         Dim SiemensNamespace As XNamespace = "http://www.siemens.com/automation/Openness/SW/Interface/v1" ' must match declaration In document
 
 
@@ -73,37 +99,20 @@ Public Class XML
         Dim SectionElement As XElement = SelectionsElemente.ElementAt(0)
 
 
-        'If (SectionElement.Name.Namespace Is XNamespace.None) Then
-        '    Console.WriteLine("The element el2 is in no namespace.")
-        'Else
-        '    Console.WriteLine("The element el2 is in a namespace.")
-        '    'a = el2.Name.NamespaceName
-        '    '  Dim Node1 As XNode = el2.FirstNode
-
-        'End If
-
-
-        ' Console.WriteLine(SelectionsElemente.)
-
-        '   Dim AlleMeldungen As IEnumerable(Of XElement) = (From element In SelectionElement.Descendants(SiemensNamespace + "Member").Attributes Where element.Value = "M_").First
-
-        '   Dim LO_Meldungen As List(Of XElement) = SelectionElement.Descendants(SiemensNamespace + "MultiLanguageText").ToList
-
-        '  Dim LO_Meldungen = (From element In SelectionsElemente(SiemensNamespace + "Member") Select element.@Name = "_M")
         Dim Selection = From element In SelectionsElemente.Elements(SiemensNamespace + "Section") Select element
 
         Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
         '   Console.WriteLine(SelectionElement.Descendants(SiemensNamespace + "MultiLanguageText").Skip(1).Take(20).Value)
 
 
-
-
         Dim ID As Integer = 10000
         Dim Meldeklasse = (From element In Meldeklassen Where element.FirstAttribute.Value = "M_")
 
 
-
+        _StatusChanged("Meldungen aus XML lesen")
         For Each Meldung As XElement In Meldeklasse.Elements
+
+
             ' Console.WriteLine(Meldeklassen.Elements)
 
             '  Console.WriteLine(Meldung.Name)
@@ -115,9 +124,9 @@ Public Class XML
 
                 Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                       .Meldeklasse = "Meldungen", .Name = Meldung.FirstAttribute.Value, .Datentyp = Meldung.@Datatype.ToString,
-                                      .ID = ID, .TriggerTag = })
+                                      .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                 ID = ID + 1
-
+                CountDBAdresse()
             End If
 
         Next
@@ -129,8 +138,11 @@ Public Class XML
 
         '  Dim StructElement As IEnumerable(Of XElement) = (From element In Störklasse.Elements() Select element Where element.FirstAttribute = StructName)
 
-
+        _StatusChanged("Störungen aus XML lesen")
         For Each Störung As XElement In Störklasse.Elements
+
+
+
             ' Console.WriteLine(Meldeklassen.Elements)
 
             '  Console.WriteLine(Störung.Name)
@@ -149,14 +161,15 @@ Public Class XML
 
 
                     Störungen.Add(New HMIAlarms With {.AlarmText = StructName & Störung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                             .Meldeklasse = "Störung", .Name = Störung.FirstAttribute.ToString, .Datentyp = Störung.@Datatype.ToString,
-                             .ID = ID})
+                             .Meldeklasse = "Störung", .Name = Störung.FirstAttribute.Value, .Datentyp = Störung.@Datatype.ToString,
+                             .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                     ID = ID + 1
+                    CountDBAdresse()
 
 
                 ElseIf Störung.@Datatype.ToString = "Struct" Then
 
-                    StructName = Störung.FirstAttribute.ToString
+                    StructName = Störung.FirstAttribute.Value
 
                     Dim StructElement = (From element In Störung.Nodes Select element)
 
@@ -165,8 +178,9 @@ Public Class XML
 
                         Störungen.Add(New HMIAlarms With {.AlarmText = StructName & " " & StructStörung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                         .Meldeklasse = "Störung", .Name = StructStörung.FirstAttribute.Value, .Datentyp = StructStörung.FirstAttribute.Value,
-                        .ID = ID})
+                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
+                        CountDBAdresse()
                         counter = counter + 1
                     Next
 
@@ -181,8 +195,19 @@ Public Class XML
 
                     '   Try
                     '   Console.WriteLine(Datentypen)
+                    'ToDo:              Kontrollieren'
+
+                    Dim Test = (From Element In Datentypen Select Element)
+
+                    '     Dim TyponeHochkomma As String = Störung.LastAttribute.Value.Replace(, "")
 
                     Dim LO_Type = (From Element In Datentypen Where Element.Typname = Störung.LastAttribute.Value Select Element)
+                    'For Each i As HMIAlarms In Test
+                    '    Console.WriteLine(i.Typname)
+                    '    Console.WriteLine(i.Typname.ToString)
+                    'Next
+
+                    '    Console.WriteLine("Störung" & Störung.LastAttribute.Value)
                     'Catch ex As Exception
                     '    MsgBox("Datenty nicht vorhanden")
                     'End Try
@@ -195,18 +220,14 @@ Public Class XML
 
                         Störungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & i.AlarmText,
                        .Meldeklasse = "Störung", .Name = i.Name, .Datentyp = i.Datentyp,
-                       .ID = ID})
+                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
-
+                        CountDBAdresse()
 
                     Next
 
 
                 End If
-
-                'Dim MKAttributes As IEnumerable(Of XAttribute) = Meldung.Attributes.ToList
-
-
 
 
             End If
@@ -214,15 +235,17 @@ Public Class XML
 
         Next
 
-        For Each i As HMIAlarms In Störungen
-            Console.WriteLine(i.AlarmText)
-        Next
+        '      For Each i As HMIAlarms In Störungen
+        '     Console.WriteLine(i.AlarmText)
+        '    Next
 
 
-        Console.WriteLine()
+        '   Console.WriteLine()
     End Sub
 
     Private Sub GetDatatyp(ByVal Pfad As String)
+        _StatusChanged("Datentypen auslesen")
+
         Dim XMLFile As XDocument
         XMLFile = XDocument.Load(Pfad)
 
@@ -289,17 +312,6 @@ Public Class XML
 
         Next
 
-        '   HMIDatentypen.Add(New Datentypen With {.TypenName = TypName})
-
-        ' HMIDatentypen.Last.TypStörungen.Add(LO_TypStörungen.First)
-
-
-        Console.WriteLine()
-
-
-
-        ' schliessen
-        '  XMLFile.Save(Pfad, SaveOptions.None)
 
 
 
@@ -307,13 +319,13 @@ Public Class XML
 
 
     Public Sub Write_Excel()
-        Dim Fred() As Integer = {1, 3, 2, 3, 4, 5, 8}
+
 
         CreateWorkbook()
         '   excelApp.Run()
         ExcelDatenEinfügen()
 
-        ExcelSpeichern("D:\TestExcel_1.xlsx")
+        ExcelSpeichern(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\HMIAlarms.xlsx")
         ' Excel._Worksheet = (Excel.Worksheet)
         'Property ExcelFile As String
         '   Property ExcelBlatt As Byte
@@ -326,7 +338,7 @@ Public Class XML
     Dim sheet As Excel.Worksheet
     Sub CreateWorkbook()
 
-
+        _StatusChanged("Create Excel File")
 
         ' Start Excel and create a workbook and worksheet.
         excelApp = New Excel.Application
@@ -334,12 +346,7 @@ Public Class XML
         sheet = CType(wkbk.Sheets.Add(), Excel.Worksheet)
         sheet.Name = "DiscreteAlarms"
 
-        ' Write a column of values.
-        ' In the For loop, both the row index and array index start at 1.
-        ' Therefore the value of 4 at array index 0 is not included.
 
-        ' Suppress any alerts and save the file. Create the directory 
-        ' if it does not exist. Overwrite the file if it exists.
 
 
 
@@ -348,6 +355,9 @@ Public Class XML
 
 
     Sub ExcelDatenEinfügen()
+        _StatusChanged("Daten In Excel File schreiben")
+
+
         'For i = 1 To values.Length - 1
         '    sheet.Cells(i, 1) = values(i)
         'Next
@@ -411,27 +421,35 @@ Public Class XML
 
 
     Sub ExcelSpeichern(ByVal filePath As String)
+        _StatusChanged("Excel Speicher, abschliessen")
+        Try
 
-        excelApp.DisplayAlerts = False
-        Dim folderPath = My.Computer.FileSystem.GetParentPath(filePath)
-        If Not My.Computer.FileSystem.DirectoryExists(folderPath) Then
-            My.Computer.FileSystem.CreateDirectory(folderPath)
-        End If
-        wkbk.SaveAs(filePath)
 
-        excelApp.DisplayAlerts = False
-        'Dim folderPath = My.Computer.FileSystem.GetParentPath(filePath)
-        'If Not My.Computer.FileSystem.DirectoryExists(folderPath) Then
-        '    My.Computer.FileSystem.CreateDirectory(folderPath)
-        'End If
-        wkbk.SaveAs(filePath)
+            excelApp.DisplayAlerts = False
+            Dim folderPath = My.Computer.FileSystem.GetParentPath(filePath)
+            If Not My.Computer.FileSystem.DirectoryExists(folderPath) Then
+                My.Computer.FileSystem.CreateDirectory(folderPath)
+            End If
+            wkbk.SaveAs(filePath)
 
-        sheet = Nothing
-        wkbk = Nothing
+            excelApp.DisplayAlerts = False
+            'Dim folderPath = My.Computer.FileSystem.GetParentPath(filePath)
+            'If Not My.Computer.FileSystem.DirectoryExists(folderPath) Then
+            '    My.Computer.FileSystem.CreateDirectory(folderPath)
+            'End If
+            wkbk.SaveAs(filePath)
 
-        ' Close Excel.
-        excelApp.Quit()
-        excelApp = Nothing
+            sheet = Nothing
+            wkbk = Nothing
+
+            ' Close Excel.
+            excelApp.Quit()
+            excelApp = Nothing
+            _StatusChanged("Fertig")
+        Catch ex As System.Runtime.InteropServices.COMException
+            _StatusChanged("Fehler beim EXCEL speichern")
+            MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
+        End Try
     End Sub
 
 End Class
