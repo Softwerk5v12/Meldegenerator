@@ -6,15 +6,16 @@
         xmlns:local="clr-namespace:Meldegenerator"
         mc:Ignorable="d"
           
-        Title="MainWindow" SizeToContent="WidthAndHeight" Loaded="Window_Loaded">
+        Title="MainWindow" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" >
     <Grid>
         <StackPanel Orientation="Vertical">
-        <WrapPanel Name="WPMain">
-            <Button Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Black" Background="LightGreen">Öffne Projekt </Button>
-            <Button Name="BT_XML" Click="BT_XML_Click"  Width="100" Height="70" Margin="10" Background="LightBlue">XML</Button>
-            <Button Click="Button_Click"  Width="100" Height="70" Margin="10"></Button>
-        </WrapPanel>
-          <local:ProgressBar x:Name="PBar"  />
+            <Image x:Name="image" Height="41" Source="Resources/Logo.png"/>
+            <WrapPanel x:Name="WPMain">
+                <Button x:Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Gray" Background="LightGreen" Content="Öffne Projekt"/>
+                <Button  Width="100" Height="70" Margin="10"/>
+                <Button  Width="100" Height="70" Margin="10"/>
+            </WrapPanel>
+            <local:ProgressBar x:Name="PBar" />
         </StackPanel>
     </Grid>
 </Window>
