@@ -14,12 +14,16 @@ Imports System
 Class MainWindow
 
     Dim WithEvents bgw As New BackgroundWorker
+    Dim gerneriere_excel As New XML
     Public Übergabeparameter As New List(Of Object)
+
+
+
 
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
-
+        Ordner_öffnen.IsEnabled = False
 
         'erlaubt zugriff auf die windows form
         bgw.WorkerReportsProgress = True
@@ -31,7 +35,6 @@ Class MainWindow
 
 
     End Sub
-
 
 
 
@@ -98,6 +101,7 @@ Class MainWindow
 
         If Not OFD.FileName = "" Then
 
+
             Try
                 bgw.RunWorkerAsync(OFD.FileName)
             Catch ex As Exception
@@ -108,7 +112,7 @@ Class MainWindow
 
 
         Else
-            MsgBox("Projekt schließen danach Meldegenerierung erneut ausführen", MsgBoxStyle.Critical)
+            MsgBox("Generierung Abgebrochen")
         End If
 
 
@@ -220,7 +224,7 @@ Class MainWindow
         Dim XML_pfad As String
 
 
-        XML_pfad = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments) & "\Meldegenerator_XML"
+        XML_pfad = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_XML"
 
 
         System.IO.Directory.CreateDirectory(XML_pfad)
@@ -316,7 +320,22 @@ Class MainWindow
         MyTiaPortal.Dispose()
 
 
+        'Ausführung der Generierung der Excel-Tabelle
 
+        gerneriere_excel.CPUnummer = (CPU_Nr + 1)
+
+        bgw.ReportProgress(90)
+        System.Threading.Thread.Sleep(100)
+
+
+        Try
+            gerneriere_excel.RunXML()
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+        bgw.ReportProgress(95)
+        System.Threading.Thread.Sleep(100)
 
 
     End Sub
@@ -344,7 +363,7 @@ Class MainWindow
                 End If
 
             End If
-            End If
+        End If
 
 
         If e.ProgressPercentage = 10 Then
@@ -387,6 +406,10 @@ Class MainWindow
             PBar.LBAnzahlTITEL.Content = "Schließe TIA Portal"
         End If
 
+        If e.ProgressPercentage = 90 Then
+            PBar.LBAnzahlTITEL.Content = "XML´s auslesen und Excel-Tabelle erstellen"
+        End If
+
 
         PBar.PGBarDaten.Value = e.ProgressPercentage
 
@@ -398,12 +421,16 @@ Class MainWindow
 
 
 
-
     Private Sub bgw_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgw.RunWorkerCompleted
         If PBar.PGBarDaten.Value = 0 Or PBar.PGBarDaten.Value = 10 Or PBar.PGBarDaten.Value = 20 Then
             MsgBox("Fehler:" & vbNewLine & "- TIA Openness nicht installiert" & vbNewLine & "- TIA Openness Benutzereinstellungen fehlen" & vbNewLine & "- .Net Framework 4.0 oder höher installieren")
-        Else
+        ElseIf PBar.PGBarDaten.Value = 95 Then
+
             PBar.LBAnzahlTITEL.Content = "Fertig"
+            PBar.PGBarDaten.Value = 100
+            Ordner_öffnen.IsEnabled = True
+
+
         End If
     End Sub
 
@@ -420,5 +447,10 @@ Class MainWindow
 
     End Sub
 
+    Private Sub Ordner_öffnen_Click(sender As Object, e As RoutedEventArgs)
+
+        System.Diagnostics.Process.Start("explorer", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_XML")
+
+    End Sub
 End Class
 

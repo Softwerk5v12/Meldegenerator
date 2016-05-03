@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Environment
+Imports System.Windows.Threading
 
 Imports Excel = Microsoft.Office.Interop.Excel
 

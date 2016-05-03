@@ -12,7 +12,7 @@
             <Image x:Name="image" Height="41" Source="Resources/Logo.png"/>
             <WrapPanel x:Name="WPMain">
                 <Button x:Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Gray" Background="LightGreen" Content="Öffne Projekt"/>
-                <Button  Width="100" Height="70" Margin="10"/>
+                <Button x:Name="Ordner_öffnen" Click="Ordner_öffnen_Click" Content="Ordner öffnen" Width="100" Height="70" Margin="10"/>
                 <Button x:Name="Abbrechen" Click="Abbrechen_Click" Width="100" Height="70" Margin="10" Content="Abbrechen"/>
             </WrapPanel>
             <local:ProgressBar x:Name="PBar" />
