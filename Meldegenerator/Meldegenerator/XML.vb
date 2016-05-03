@@ -96,8 +96,11 @@ Public Class XML
 
         Dim Selection = From element In SelectionsElemente.Elements(SiemensNamespace + "Section") Select element
 
+
+
         Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
 
+        ID = CPUnummer * 10000
 
         Dim Meldeklasse = (From element In Meldeklassen Where element.FirstAttribute.Value Like "M_*")
 
@@ -110,8 +113,11 @@ Public Class XML
 
 
     End Sub
+
+
+
     Private Sub MeldungenGenerieren(ByVal Meldeklasse As IEnumerable(Of XElement))
-        ID = CPUnummer * 10000
+        Dim MeldungsBoolafter_others As Boolean = False
         Dim MeldungAlarmtext As String = Nothing
         Dim MeldungStructName As String = Nothing
         Dim Meldungcounter As Integer = 0
@@ -123,14 +129,21 @@ Public Class XML
             If Meldung.Name = "{" & SiemensNamespace.ToString & "}Member" Then
 
                 If Meldung.@Datatype.ToString = "Bool" Then
-
+                    If MeldungsBoolafter_others = True Then
+                        AddressBit = 7
+                        CountDBAdresse()
+                        MeldungsBoolafter_others = False
+                    End If
                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                       .Meldeklasse = "Meldungen", .Name = Meldung.FirstAttribute.Value, .Datentyp = Meldung.@Datatype.ToString,
                                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                     ID = ID + 1
                     CountDBAdresse()
                 ElseIf Meldung.@Datatype.ToString = "Struct" Then
+                    AddressBit = 7
+                    CountDBAdresse()
 
+                    MeldungsBoolafter_others = True
                     MeldungStructName = Meldung.FirstAttribute.Value
 
                     Dim StructElement = (From element In Meldung.Nodes Select element)
@@ -146,10 +159,11 @@ Public Class XML
                         Meldungcounter = Meldungcounter + 1
 
                     Next
+
+                ElseIf Meldung.@Datatype.ToString Like "Array*" Then
                     AddressBit = 7
                     CountDBAdresse()
-                ElseIf Meldung.@Datatype.ToString Like "Array*" Then
-
+                    MeldungsBoolafter_others = True
                     ' MsgBox("Array noch nicht ausprogrammiert")
                     Dim GETDatatyp As String = Meldung.@Datatype
 
@@ -189,6 +203,9 @@ Public Class XML
                     CountDBAdresse()
                     '   Console.WriteLine(StructElement.Count)
                 Else
+                    MeldungsBoolafter_others = True
+                    AddressBit = 7
+                    CountDBAdresse()
                     Dim TypName As String
 
                     TypName = Meldung.FirstAttribute.Value
@@ -222,19 +239,21 @@ Public Class XML
                         CountDBAdresse()
 
                     Next
-                    AddressBit = 7
-                    CountDBAdresse()
+
 
                 End If
 
             End If
 
         Next
+
+    End Sub
+
+
+    Private Sub StörungenGenerieren(ByVal Störklasse As IEnumerable(Of XElement))
+        Dim StörungsBoolafter_others As Boolean = False
         AddressBit = 7
         CountDBAdresse()
-    End Sub
-    Private Sub StörungenGenerieren(ByVal Störklasse As IEnumerable(Of XElement))
-        ID = CPUnummer * 10000
         _StatusChanged("Störungen aus XML lesen")
         For Each Störung As XElement In Störklasse.Elements
 
@@ -247,6 +266,11 @@ Public Class XML
                 Dim Störungcounter As Integer = 0
 
                 If Störung.@Datatype.ToString = "Bool" Then
+                    If StörungsBoolafter_others = True Then
+                        AddressBit = 7
+                        CountDBAdresse()
+                        StörungsBoolafter_others = False
+                    End If
                     StörungStructName = ""
 
 
@@ -258,7 +282,9 @@ Public Class XML
 
 
                 ElseIf Störung.@Datatype.ToString = "Struct" Then
-
+                    StörungsBoolafter_others = True
+                    AddressBit = 7
+                    CountDBAdresse()
                     StörungStructName = Störung.FirstAttribute.Value
 
                     Dim StructElement = (From element In Störung.Nodes Select element)
@@ -273,10 +299,12 @@ Public Class XML
                         CountDBAdresse()
                         Störungcounter = Störungcounter + 1
                     Next
-                    AddressBit = 7
-                    CountDBAdresse()
+
 
                 ElseIf Störung.@Datatype.ToString Like "Array*" Then
+                    StörungsBoolafter_others = True
+                    AddressBit = 7
+                    CountDBAdresse()
                     '   MsgBox("Array noch nicht ausprogrammiert")
                     Dim GETDatatyp As String = Störung.@Datatype
 
@@ -311,11 +339,13 @@ Public Class XML
                                     CountDBAdresse()
                                 Next
                             Next
-                            AddressBit = 7
-                            CountDBAdresse()
+
                     End Select
                     '   Console.WriteLine(StructElement.Count)
                 Else
+                    StörungsBoolafter_others = True
+                    AddressBit = 7
+                    CountDBAdresse()
                     Dim TypName As String
 
                     TypName = Störung.FirstAttribute.Value
@@ -327,11 +357,11 @@ Public Class XML
 
                     Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma Select Element)
                     For Each i As HMIAlarms In Test
-                        Console.WriteLine(i.Typname)
+                        '  Console.WriteLine(i.Typname)
                         'Console.WriteLine(i.Typname.ToString)
                     Next
 
-                    Console.WriteLine("Störung" & TyponeHochkomma)
+                    ' Console.WriteLine("Störung" & TyponeHochkomma)
                     'Catch ex As Exception
                     '    MsgBox("Datenty nicht vorhanden")
                     'End Try
@@ -349,8 +379,7 @@ Public Class XML
                         CountDBAdresse()
 
                     Next
-                    AddressBit = 7
-                    CountDBAdresse()
+
 
                 End If
 
@@ -358,8 +387,6 @@ Public Class XML
 
 
         Next
-        AddressBit = 7
-        CountDBAdresse()
 
     End Sub
     Private Sub GetDatatyp(ByVal Pfad As String)
