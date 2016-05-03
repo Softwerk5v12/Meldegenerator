@@ -12,7 +12,7 @@
           
             <WrapPanel x:Name="WPMain">
                 <Button x:Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Gray" Background="LightGreen" Content="Öffne Projekt"/>
-                <Button  Width="100" Height="70" Margin="10"/>
+                <Button Click="Button_Click"  Width="100" Height="70" Margin="10"/>
                 <Button  Width="100" Height="70" Margin="10"/>
             </WrapPanel>
             <local:ProgressBar x:Name="PBar" />

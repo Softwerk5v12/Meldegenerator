@@ -11,7 +11,7 @@ Class MainWindow
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
 
-
+        AddHandler _xml.StatusChaged, AddressOf Changed
 
     End Sub
 
@@ -25,6 +25,12 @@ Class MainWindow
         'PGbar.OpenProjekt()
 
 
+    End Sub
+
+    Private Sub Changed()
+        PBar.LBAnzahlTITEL.Content = _xml.Status
+
+        Me.Dispatcher.Invoke(DispatcherPriority.Background, Function() 0)
     End Sub
 
     Private Sub ProjektÖffnen_Click(sender As Object, e As RoutedEventArgs)
@@ -47,6 +53,10 @@ Class MainWindow
 
     End Sub
 
+    Dim _xml As New XML
 
+    Private Sub Button_Click(sender As Object, e As RoutedEventArgs)
+        _xml.RunXML()
+    End Sub
 End Class
 

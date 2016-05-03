@@ -52,13 +52,13 @@ Public Class XML
     End Sub
 
 
-    Private AddresssWord As Integer = 0
-    Private AddressBit As Integer = 8
+    Private AddresssWord As Integer = -2
+    Private AddressBit As Integer = 7
     Private AddressTag As String
 
     Private Sub CountDBAdresse()
 
-        _StatusChanged("Count DB Address")
+        _StatusChanged("Calculate DB Address")
 
         If AddressBit >= 15 Then
             AddressBit = 0
@@ -71,7 +71,7 @@ Public Class XML
             AddresssWord = AddresssWord + 2
         End If
 
-        AddressTag = TagName & DBNummer & ".DBW" & AddresssWord
+        AddressTag = """" & TagName & DBNummer & ".DBW" & AddresssWord & """"
     End Sub
 
 
@@ -83,7 +83,7 @@ Public Class XML
         Dim Interface_Sections As XElement =
             (From el In XMLFile.<Document>.<SW.DataBlock>.<AttributeList>.<Interface>
              Select el).First
-
+        CountDBAdresse()
 
         Dim SelectionsElemente As IEnumerable(Of XElement) =
         From element In Interface_Sections.Elements(SiemensNamespace + "Sections")
@@ -97,12 +97,12 @@ Public Class XML
         Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
 
 
-        Dim Meldeklasse = (From element In Meldeklassen Where element.FirstAttribute.Value = "M_")
+        Dim Meldeklasse = (From element In Meldeklassen Where element.FirstAttribute.Value Like "M_*")
 
         MeldungenGenerieren(Meldeklasse)
 
 
-        Dim Störklasse = (From element In Meldeklassen Where element.FirstAttribute.Value = "S_")
+        Dim Störklasse = (From element In Meldeklassen Where element.FirstAttribute.Value Like "S_*")
         StörungenGenerieren(Störklasse)
 
 
@@ -141,8 +141,10 @@ Public Class XML
                         ID = ID + 1
                         CountDBAdresse()
                         Meldungcounter = Meldungcounter + 1
-                    Next
 
+                    Next
+                    AddressBit = 7
+                    CountDBAdresse()
                 ElseIf Meldung.@Datatype.ToString Like "Array*" Then
 
                     ' MsgBox("Array noch nicht ausprogrammiert")
@@ -180,7 +182,8 @@ Public Class XML
                                 Next
                             Next
                     End Select
-
+                    AddressBit = 7
+                    CountDBAdresse()
                     '   Console.WriteLine(StructElement.Count)
                 Else
                     Dim TypName As String
@@ -216,12 +219,16 @@ Public Class XML
                         CountDBAdresse()
 
                     Next
-
+                    AddressBit = 7
+                    CountDBAdresse()
 
                 End If
 
             End If
+
         Next
+        AddressBit = 7
+        CountDBAdresse()
     End Sub
     Private Sub StörungenGenerieren(ByVal Störklasse As IEnumerable(Of XElement))
 
@@ -263,22 +270,24 @@ Public Class XML
                         CountDBAdresse()
                         Störungcounter = Störungcounter + 1
                     Next
+                    AddressBit = 7
+                    CountDBAdresse()
 
                 ElseIf Störung.@Datatype.ToString Like "Array*" Then
-                    MsgBox("Array noch nicht ausprogrammiert")
+                    '   MsgBox("Array noch nicht ausprogrammiert")
                     Dim GETDatatyp As String = Störung.@Datatype
 
                     Dim ArrayBeginn As String = Störung.@Datatype
                     ArrayBeginn = ArrayBeginn.Substring(6)
                     ArrayBeginn = ArrayBeginn.Remove(1)
-                    MsgBox(ArrayBeginn)
+                    '  MsgBox(ArrayBeginn)
 
                     Dim ArrayEnde As String = Störung.@Datatype
 
                     ArrayEnde = ArrayEnde.Substring(ArrayEnde.LastIndexOf("."))
                     ArrayEnde = ArrayEnde.Remove(ArrayEnde.IndexOf("]"))
                     ArrayEnde = ArrayEnde.Replace(".", "")
-                    MsgBox(ArrayEnde)
+                    ' MsgBox(ArrayEnde)
 
 
 
@@ -286,19 +295,21 @@ Public Class XML
                     GETDatatyp = GETDatatyp.Remove(GETDatatyp.LastIndexOf("fo"))
                     GETDatatyp = StrReverse(GETDatatyp)
                     GETDatatyp = GETDatatyp.Replace(" ", "")
-                    MsgBox(GETDatatyp)
+                    '  MsgBox(GETDatatyp)
 
                     Select Case GETDatatyp
                         Case "Byte"
                             For i As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
                                 For j = 0 To 7
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = Störung.FirstAttribute.Value,
-                                                                          .Meldeklasse = "Meldungen", .Name = Störung.FirstAttribute.Value & ID, .Datentyp = Störung.@Datatype.ToString,
+                                                                          .Meldeklasse = "Störung", .Name = Störung.FirstAttribute.Value & ID, .Datentyp = Störung.@Datatype.ToString,
                                                                           .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                                     ID = ID + 1
                                     CountDBAdresse()
                                 Next
                             Next
+                            AddressBit = 7
+                            CountDBAdresse()
                     End Select
                     '   Console.WriteLine(StructElement.Count)
                 Else
@@ -335,15 +346,18 @@ Public Class XML
                         CountDBAdresse()
 
                     Next
-
+                    AddressBit = 7
+                    CountDBAdresse()
 
                 End If
-
 
             End If
 
 
         Next
+        AddressBit = 7
+        CountDBAdresse()
+
     End Sub
     Private Sub GetDatatyp(ByVal Pfad As String)
         _StatusChanged("Datentypen auslesen")
@@ -566,7 +580,7 @@ Public Class HMIAlarms
     Public Meldeklasse As String
     Public TriggerTag As String
     Public TrigerBit As Integer
-    Public Acknowledgementtag As String = " < No value>"
+    Public Acknowledgementtag As String = "<No value>"
     Public Acknoledgementbit As Integer = 0
     Public PLCAcknowledgementTag As String = "<No value>"
     Public PLCAcknowledgementBit As Integer = 0
