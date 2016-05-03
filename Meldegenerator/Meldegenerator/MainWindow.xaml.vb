@@ -11,6 +11,8 @@ Imports Siemens.Engineering.SW
 Imports Siemens.Engineering.Compiler
 Imports System
 
+
+
 Class MainWindow
 
     Dim WithEvents bgw As New BackgroundWorker
@@ -125,6 +127,8 @@ Class MainWindow
 
     Public Sub bgw_DoWork(ByVal sender As Object, ByVal e As System.ComponentModel.DoWorkEventArgs) Handles bgw.DoWork
 
+
+
         Dim Err_Meldebaustein As Boolean = True
 
         Dim pfad As String = Convert.ToString(e.Argument)
@@ -140,7 +144,7 @@ Class MainWindow
         bgw.ReportProgress(20)
         System.Threading.Thread.Sleep(100)
 
-        Dim MyProjekt = MyTiaPortal.Projects.Open(Pfad)
+        Dim MyProjekt = MyTiaPortal.Projects.Open(pfad)
 
 
         Dim CPU_Namen As New List(Of String)
@@ -270,6 +274,7 @@ Class MainWindow
                     MsgBox("Meldebaustein nicht übersetzt")
                 End If
                 Err_Meldebaustein = False
+                gerneriere_excel.DBNummer = Baustein.Number
             End If
 
         Next
@@ -346,6 +351,8 @@ Class MainWindow
 
 
     Public Sub bgw_ProgressChanged(ByVal sender As Object, ByVal e As System.ComponentModel.ProgressChangedEventArgs) Handles bgw.ProgressChanged
+        Ordner_öffnen.IsEnabled = False
+
         Dim CPUA As New CPUAuswahl
 
         If Übergabeparameter.Count > 0 Then
@@ -449,7 +456,7 @@ Class MainWindow
 
     Private Sub Ordner_öffnen_Click(sender As Object, e As RoutedEventArgs)
 
-        System.Diagnostics.Process.Start("explorer", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_XML")
+        System.Diagnostics.Process.Start("explorer", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms")
 
     End Sub
 End Class

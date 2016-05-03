@@ -71,11 +71,13 @@ Public Class XML
             AddresssWord = AddresssWord + 2
         End If
 
+        TagName = "Trigger_AT_" & CPUnummer.ToString & "_DB"
+
         AddressTag = """" & TagName & DBNummer & ".DBW" & AddresssWord & """"
     End Sub
 
 
-    Dim ID As Integer = 10000
+    Dim ID As Integer = CPUnummer * 10000
     Dim SiemensNamespace As XNamespace = "http://www.siemens.com/automation/Openness/SW/Interface/v1" ' must match declaration In document
     Private Sub GetHMIMeldungen()
         _StatusChanged("XML initialisieren")
@@ -109,6 +111,7 @@ Public Class XML
 
     End Sub
     Private Sub MeldungenGenerieren(ByVal Meldeklasse As IEnumerable(Of XElement))
+        ID = CPUnummer * 10000
         Dim MeldungAlarmtext As String = Nothing
         Dim MeldungStructName As String = Nothing
         Dim Meldungcounter As Integer = 0
@@ -231,7 +234,7 @@ Public Class XML
         CountDBAdresse()
     End Sub
     Private Sub StörungenGenerieren(ByVal Störklasse As IEnumerable(Of XElement))
-
+        ID = CPUnummer * 10000
         _StatusChanged("Störungen aus XML lesen")
         For Each Störung As XElement In Störklasse.Elements
 
@@ -436,12 +439,13 @@ Public Class XML
 
     Public Sub Write_Excel()
 
+        System.IO.Directory.CreateDirectory(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms")
 
         CreateWorkbook()
         '   excelApp.Run()
         ExcelDatenEinfügen()
 
-        ExcelSpeichern(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\HMIAlarms.xlsx")
+        ExcelSpeichern(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\HMIAlarms.xlsx")
         ' Excel._Worksheet = (Excel.Worksheet)
         'Property ExcelFile As String
         '   Property ExcelBlatt As Byte
