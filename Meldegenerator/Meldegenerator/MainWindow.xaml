@@ -9,7 +9,7 @@
         Title="MainWindow" SizeToContent="WidthAndHeight" Loaded="Window_Loaded" >
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Image x:Name="image" Height="41" Source="Resources/Logo.png"/>
+          
             <WrapPanel x:Name="WPMain">
                 <Button x:Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Gray" Background="LightGreen" Content="Öffne Projekt"/>
                 <Button  Width="100" Height="70" Margin="10"/>
