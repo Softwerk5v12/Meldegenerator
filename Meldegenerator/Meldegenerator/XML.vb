@@ -9,6 +9,25 @@ Imports Excel = Microsoft.Office.Interop.Excel
 
 
 Public Class XML
+
+
+    Const Column0_A As String = "ID"
+    Const Column1_B As String = "Name"
+    Const Column2_C As String = "Event text [de-DE], Alarm text"
+    Const Column3_D As String = "FieldInfo [Alarm text]"
+    Const Column4_E As String = "Class"
+    Const Column5_F As String = "Trigger tag"
+    Const Column6_G As String = "Trigger bit"
+    Const Column7_H As String = "Acknowledgement tag"
+    Const Column8_I As String = "Acknowledgement bit"
+    Const Column9_J As String = "PLC acknowledgement tag"
+    Const Column10_K As String = "PLC acknowledgement bit"
+    Const Column11_L As String = "Group"
+    Const Column12_M As String = "Report"
+    Const Column13_N As String = "Info text [de-DE], Info text"
+
+
+
     Public Event StatusChaged()
     Private Sub _StatusChanged(ByVal _Status As String)
         Status = _Status
@@ -22,7 +41,7 @@ Public Class XML
 
 
     Dim Meldungen As New List(Of HMIAlarms)
-    Dim Störungen As New List(Of HMIAlarms)
+
 
     Dim Datentypen As New List(Of HMIAlarms)
 
@@ -41,6 +60,9 @@ Public Class XML
         Catch ex As Exception
             _StatusChanged("Fehler beim XML öffnen")
         End Try
+
+        CreateWorkbook()
+
         GetHMIMeldungen()
 
 
@@ -52,7 +74,8 @@ Public Class XML
     End Sub
 
 
-    Private AddresssWord As Integer = -2
+    Private AddressWord As Integer = -1
+    ' Private AddressName As Integer = -1
     Private AddressBit As Integer = 7
     Private AddressTag As String
 
@@ -68,12 +91,13 @@ Public Class XML
         End If
 
         If AddressBit = 8 Then
-            AddresssWord = AddresssWord + 2
+            AddressWord = AddressWord + 1
+            '  AddressName = AddressName + 1
         End If
 
         TagName = "Trigger_AT_" & CPUnummer.ToString & "_DB"
 
-        AddressTag = """" & TagName & DBNummer & ".DBW" & AddresssWord & """"
+        AddressTag = """" & TagName & DBNummer & ".DBW" & AddressWord & """"
     End Sub
 
 
@@ -96,21 +120,28 @@ Public Class XML
 
         Dim Selection = From element In SelectionsElemente.Elements(SiemensNamespace + "Section") Select element
 
-
-
-        Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
-
         ID = CPUnummer * 10000
 
-        Dim Meldeklasse = (From element In Meldeklassen Where element.FirstAttribute.Value Like "M_*")
-
-        MeldungenGenerieren(Meldeklasse)
-
-
-        Dim Störklasse = (From element In Meldeklassen Where element.FirstAttribute.Value Like "S_*")
-        StörungenGenerieren(Störklasse)
+        Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
+        For i As Integer = 0 To Meldeklassen.Count - 1
 
 
+            Dim AktuelleMeldeklasse = Meldeklassen.ElementAt(i).Elements
+
+            If AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "M_*" Then
+                MeldungenGenerieren(AktuelleMeldeklasse)
+                AddressBit = 7
+                CountDBAdresse()
+            ElseIf AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "S_*" Then
+                MeldungenGenerieren(AktuelleMeldeklasse)
+                AddressBit = 7
+                CountDBAdresse()
+            Else
+
+                MsgBox("DIe Meldeklasse ist falsch benannt, der Klassenname muss mit ""M_"" oder ""S_"" beginnen")
+            End If
+
+        Next
 
     End Sub
 
@@ -122,11 +153,15 @@ Public Class XML
         Dim MeldungStructName As String = Nothing
         Dim Meldungcounter As Integer = 0
         _StatusChanged("Meldungen aus XML lesen")
-        For Each Meldung As XElement In Meldeklasse.Elements
 
+        Dim Meldeklassenname As String = Meldeklasse.First.Value
+        'Dim Meldeklassenname As String = ""
+        For Each Meldung As XElement In Meldeklasse
 
-
+            '  MsgBox(Meldung.Name.ToString)
             If Meldung.Name = "{" & SiemensNamespace.ToString & "}Member" Then
+
+
 
                 If Meldung.@Datatype.ToString = "Bool" Then
                     If MeldungsBoolafter_others = True Then
@@ -135,7 +170,7 @@ Public Class XML
                         MeldungsBoolafter_others = False
                     End If
                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                                      .Meldeklasse = "Meldungen", .Name = Meldung.FirstAttribute.Value, .Datentyp = Meldung.@Datatype.ToString,
+                                      .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                     ID = ID + 1
                     CountDBAdresse()
@@ -151,8 +186,8 @@ Public Class XML
                     For i As Integer = 1 To StructElement.Count - 1
                         Dim StructMeldung As XElement = StructElement.ElementAt(i)
 
-                        Meldung.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                        .Meldeklasse = "Meldung", .Name = StructMeldung.FirstAttribute.Value, .Datentyp = StructMeldung.FirstAttribute.Value,
+                        Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
+                         .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                         .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
                         CountDBAdresse()
@@ -190,17 +225,17 @@ Public Class XML
                     Select Case GETDatatyp
                         Case "Byte"
                             For i As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
+                                '  MsgBox(Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value)
                                 For j = 0 To 7
-                                    Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.FirstAttribute.Value,
-                                                                          .Meldeklasse = "Meldungen", .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
+                                    Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.FirstAttribute.Value & ID,
+                                                                            .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                                                                           .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                                     ID = ID + 1
                                     CountDBAdresse()
                                 Next
                             Next
                     End Select
-                    AddressBit = 7
-                    CountDBAdresse()
+
                     '   Console.WriteLine(StructElement.Count)
                 Else
                     MeldungsBoolafter_others = True
@@ -211,17 +246,14 @@ Public Class XML
                     TypName = Meldung.FirstAttribute.Value
 
 
-                    Dim Test = (From Element In Datentypen Select Element)
+
                     Const quote As String = """"
                     Dim TyponeHochkomma As String = Meldung.LastAttribute.Value.Replace(quote, "")
 
-                    Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma Select Element)
-                    For Each i As HMIAlarms In Test
-                        Console.WriteLine(i.Typname)
-                        'Console.WriteLine(i.Typname.ToString)
-                    Next
+                    Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma)
 
-                    Console.WriteLine("Meldung" & TyponeHochkomma)
+
+                    ' Console.WriteLine("Meldung" & TyponeHochkomma)
                     'Catch ex As Exception
                     '    MsgBox("Datenty nicht vorhanden")
                     'End Try
@@ -232,163 +264,23 @@ Public Class XML
 
                     For Each i As HMIAlarms In LO_Type
 
-                        Meldung.Add(New HMIAlarms With {.AlarmText = TypName & " " & i.AlarmText,
-                       .Meldeklasse = "Meldung", .Name = i.Name, .Datentyp = i.Datentyp,
+                        Meldungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & i.AlarmText,
+                       .Meldeklasse = Meldeklassenname, .Name = i.Name & ID, .Datentyp = i.Datentyp,
                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
                         CountDBAdresse()
 
                     Next
 
-
                 End If
-
             End If
-
         Next
+
 
     End Sub
 
 
-    Private Sub StörungenGenerieren(ByVal Störklasse As IEnumerable(Of XElement))
-        Dim StörungsBoolafter_others As Boolean = False
-        AddressBit = 7
-        CountDBAdresse()
-        _StatusChanged("Störungen aus XML lesen")
-        For Each Störung As XElement In Störklasse.Elements
 
-
-            If Störung.Name = "{" & SiemensNamespace.ToString & "}Member" Then
-
-
-                Dim StörungAlarmtext As String = Nothing
-                Dim StörungStructName As String = Nothing
-                Dim Störungcounter As Integer = 0
-
-                If Störung.@Datatype.ToString = "Bool" Then
-                    If StörungsBoolafter_others = True Then
-                        AddressBit = 7
-                        CountDBAdresse()
-                        StörungsBoolafter_others = False
-                    End If
-                    StörungStructName = ""
-
-
-                    Störungen.Add(New HMIAlarms With {.AlarmText = StörungStructName & Störung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                             .Meldeklasse = "Störung", .Name = Störung.FirstAttribute.Value, .Datentyp = Störung.@Datatype.ToString,
-                             .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
-                    ID = ID + 1
-                    CountDBAdresse()
-
-
-                ElseIf Störung.@Datatype.ToString = "Struct" Then
-                    StörungsBoolafter_others = True
-                    AddressBit = 7
-                    CountDBAdresse()
-                    StörungStructName = Störung.FirstAttribute.Value
-
-                    Dim StructElement = (From element In Störung.Nodes Select element)
-
-                    For i As Integer = 1 To StructElement.Count - 1
-                        Dim StructStörung As XElement = StructElement.ElementAt(i)
-
-                        Störungen.Add(New HMIAlarms With {.AlarmText = StörungStructName & " " & StructStörung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                        .Meldeklasse = "Störung", .Name = StructStörung.FirstAttribute.Value, .Datentyp = StructStörung.FirstAttribute.Value,
-                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
-                        ID = ID + 1
-                        CountDBAdresse()
-                        Störungcounter = Störungcounter + 1
-                    Next
-
-
-                ElseIf Störung.@Datatype.ToString Like "Array*" Then
-                    StörungsBoolafter_others = True
-                    AddressBit = 7
-                    CountDBAdresse()
-                    '   MsgBox("Array noch nicht ausprogrammiert")
-                    Dim GETDatatyp As String = Störung.@Datatype
-
-                    Dim ArrayBeginn As String = Störung.@Datatype
-                    ArrayBeginn = ArrayBeginn.Substring(6)
-                    ArrayBeginn = ArrayBeginn.Remove(1)
-                    '  MsgBox(ArrayBeginn)
-
-                    Dim ArrayEnde As String = Störung.@Datatype
-
-                    ArrayEnde = ArrayEnde.Substring(ArrayEnde.LastIndexOf("."))
-                    ArrayEnde = ArrayEnde.Remove(ArrayEnde.IndexOf("]"))
-                    ArrayEnde = ArrayEnde.Replace(".", "")
-                    ' MsgBox(ArrayEnde)
-
-
-
-                    GETDatatyp = StrReverse(GETDatatyp)
-                    GETDatatyp = GETDatatyp.Remove(GETDatatyp.LastIndexOf("fo"))
-                    GETDatatyp = StrReverse(GETDatatyp)
-                    GETDatatyp = GETDatatyp.Replace(" ", "")
-                    '  MsgBox(GETDatatyp)
-
-                    Select Case GETDatatyp
-                        Case "Byte"
-                            For i As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
-                                For j = 0 To 7
-                                    Meldungen.Add(New HMIAlarms With {.AlarmText = Störung.FirstAttribute.Value,
-                                                                          .Meldeklasse = "Störung", .Name = Störung.FirstAttribute.Value & ID, .Datentyp = Störung.@Datatype.ToString,
-                                                                          .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
-                                    ID = ID + 1
-                                    CountDBAdresse()
-                                Next
-                            Next
-
-                    End Select
-                    '   Console.WriteLine(StructElement.Count)
-                Else
-                    StörungsBoolafter_others = True
-                    AddressBit = 7
-                    CountDBAdresse()
-                    Dim TypName As String
-
-                    TypName = Störung.FirstAttribute.Value
-
-
-                    Dim Test = (From Element In Datentypen Select Element)
-                    Const quote As String = """"
-                    Dim TyponeHochkomma As String = Störung.LastAttribute.Value.Replace(quote, "")
-
-                    Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma Select Element)
-                    For Each i As HMIAlarms In Test
-                        '  Console.WriteLine(i.Typname)
-                        'Console.WriteLine(i.Typname.ToString)
-                    Next
-
-                    ' Console.WriteLine("Störung" & TyponeHochkomma)
-                    'Catch ex As Exception
-                    '    MsgBox("Datenty nicht vorhanden")
-                    'End Try
-                    If LO_Type.Count = 0 Then
-                        MsgBox("Datentyp: " & Störung.LastAttribute.Value & " nicht gefunden")
-                    End If
-
-
-                    For Each i As HMIAlarms In LO_Type
-
-                        Störungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & i.AlarmText,
-                       .Meldeklasse = "Störung", .Name = i.Name, .Datentyp = i.Datentyp,
-                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
-                        ID = ID + 1
-                        CountDBAdresse()
-
-                    Next
-
-
-                End If
-
-            End If
-
-
-        Next
-
-    End Sub
     Private Sub GetDatatyp(ByVal Pfad As String)
         _StatusChanged("Datentypen auslesen")
 
@@ -441,19 +333,13 @@ Public Class XML
 
             Dim Typmeldungen As XElement = Typklassen.ElementAt(i)
 
-            If i = 0 Then
-                TypName = Typmeldungen.FirstAttribute.Value
-            Else
-                ' Console.WriteLine(Name.Value)
-                Datentypen.Add(New HMIAlarms With {.AlarmText = TypName & Typmeldungen.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                                .Meldeklasse = "Störung", .Name = Typmeldungen.FirstAttribute.Value, .Datentyp = Typmeldungen.LastAttribute.Value, .Typname = Name.Value})
-            End If
 
-            ' Console.WriteLine(Meldeklassen.Elements)
+            TypName = Typmeldungen.FirstAttribute.Value
 
-            '   If TypMeldung.@Datatype.ToString = "Struct" Then
+            ' Console.WriteLine(Name.Value)
+            Datentypen.Add(New HMIAlarms With {.AlarmText = TypName & Typmeldungen.Descendants(SiemensNamespace + "MultiLanguageText").Value,
+                                 .Name = Typmeldungen.FirstAttribute.Value, .Datentyp = Typmeldungen.LastAttribute.Value, .Typname = Name.Value})
 
-            '  TypName = TypMeldung.FirstAttribute.ToString
 
 
         Next
@@ -468,7 +354,7 @@ Public Class XML
 
         System.IO.Directory.CreateDirectory(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms")
 
-        CreateWorkbook()
+
         '   excelApp.Run()
         ExcelDatenEinfügen()
 
@@ -509,21 +395,21 @@ Public Class XML
         '    sheet.Cells(i, 1) = values(i)
         'Next
         Dim i As Integer = 1
-        sheet.Cells(1, 1) = Meldungen(0).Column0_A
-        sheet.Cells(1, 2) = Meldungen(0).Column1_B
+        sheet.Cells(1, 1) = Column0_A
+        sheet.Cells(1, 2) = Column1_B
 
-        sheet.Cells(1, 3) = Meldungen(0).Column2_C
-        sheet.Cells(1, 4) = Meldungen(0).Column3_D
-        sheet.Cells(1, 5) = Meldungen(0).Column4_E
-        sheet.Cells(1, 6) = Meldungen(0).Column5_F
-        sheet.Cells(1, 7) = Meldungen(0).Column6_G
-        sheet.Cells(1, 8) = Meldungen(0).Column7_H
-        sheet.Cells(1, 9) = Meldungen(0).Column8_I
-        sheet.Cells(1, 10) = Meldungen(0).Column9_J
-        sheet.Cells(1, 11) = Meldungen(0).Column10_K
-        sheet.Cells(1, 12) = Meldungen(0).Column11_L
-        sheet.Cells(1, 13) = Meldungen(0).Column12_M
-        sheet.Cells(1, 14) = Meldungen(0).Column13_N
+        sheet.Cells(1, 3) = Column2_C
+        sheet.Cells(1, 4) = Column3_D
+        sheet.Cells(1, 5) = Column4_E
+        sheet.Cells(1, 6) = Column5_F
+        sheet.Cells(1, 7) = Column6_G
+        sheet.Cells(1, 8) = Column7_H
+        sheet.Cells(1, 9) = Column8_I
+        sheet.Cells(1, 10) = Column9_J
+        sheet.Cells(1, 11) = Column10_K
+        sheet.Cells(1, 12) = Column11_L
+        sheet.Cells(1, 13) = Column12_M
+        sheet.Cells(1, 14) = Column13_N
 
         i = i + 1
 
@@ -545,24 +431,8 @@ Public Class XML
 
             i = i + 1
         Next
-        For Each Alarm As HMIAlarms In Störungen
-            sheet.Cells(i, 1) = Alarm.ID
-            sheet.Cells(i, 2) = Alarm.Name
-            sheet.Cells(i, 3) = Alarm.AlarmText
-            sheet.Cells(i, 4) = Alarm.FieldInfo
-            sheet.Cells(i, 5) = Alarm.Meldeklasse
-            sheet.Cells(i, 6) = Alarm.TriggerTag
-            sheet.Cells(i, 7) = Alarm.TrigerBit
-            sheet.Cells(i, 8) = Alarm.Acknowledgementtag
-            sheet.Cells(i, 9) = Alarm.Acknoledgementbit
-            sheet.Cells(i, 10) = Alarm.PLCAcknowledgementTag
-            sheet.Cells(i, 11) = Alarm.PLCAcknowledgementBit
-            sheet.Cells(i, 12) = Alarm.Group
-            sheet.Cells(i, 13) = Alarm.Report
-            sheet.Cells(i, 14) = Alarm.InfoText
+        Meldungen.Clear()
 
-            i = i + 1
-        Next
 
     End Sub
 
@@ -597,6 +467,7 @@ Public Class XML
             _StatusChanged("Fehler beim EXCEL speichern")
             MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
         End Try
+        MsgBox("Fertig")
     End Sub
 
 End Class
@@ -616,25 +487,11 @@ Public Class HMIAlarms
     Public PLCAcknowledgementTag As String = "<No value>"
     Public PLCAcknowledgementBit As Integer = 0
     Public Group As String = "<No value>"
-    Public Report As String = "False"
+    Public Report As String = "'False"
     Public InfoText As String = "<No value>"
     Public Datentyp As String
     Public Typname As String
 
-    Public ReadOnly Column0_A As String = "ID"
-    Public ReadOnly Column1_B As String = "Name"
-    Public ReadOnly Column2_C As String = "Event text [de-DE], Alarm text"
-    Public ReadOnly Column3_D As String = "FieldInfo [Alarm text]"
-    Public ReadOnly Column4_E As String = "Class"
-    Public ReadOnly Column5_F As String = "Trigger tag"
-    Public ReadOnly Column6_G As String = "Trigger bit"
-    Public ReadOnly Column7_H As String = "Acknowledgement tag"
-    Public ReadOnly Column8_I As String = "Acknowledgement bit"
-    Public ReadOnly Column9_J As String = "PLC acknowledgement tag"
-    Public ReadOnly Column10_K As String = "PLC acknowledgement bit"
-    Public ReadOnly Column11_L As String = "Group"
-    Public ReadOnly Column12_M As String = "Report"
-    Public ReadOnly Column13_N As String = "Info text [de-DE], Info text"
 
 
 

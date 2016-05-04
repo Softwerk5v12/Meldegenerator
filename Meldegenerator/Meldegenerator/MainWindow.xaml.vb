@@ -93,30 +93,31 @@ Class MainWindow
 
 
 
+    Dim _xml As New XML
 
     Private Sub ProjektÖffnen_Click(sender As Object, e As RoutedEventArgs)
-        Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
+        'Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
+
+        'OFD.ShowDialog()
 
 
-        OFD.ShowDialog()
+        'If Not OFD.FileName = "" Then
 
 
-        If Not OFD.FileName = "" Then
-
-
-            Try
-                bgw.RunWorkerAsync(OFD.FileName)
-            Catch ex As Exception
-                MsgBox(ex.ToString)
-            End Try
+        '    Try
+        '        bgw.RunWorkerAsync(OFD.FileName)
+        '    Catch ex As Exception
+        '        MsgBox(ex.ToString)
+        '    End Try
 
 
 
 
-        Else
-            MsgBox("Generierung Abgebrochen")
-        End If
+        'Else
+        '    MsgBox("Generierung Abgebrochen")
+        'End If
 
+        _xml.RunXML()
 
     End Sub
 
