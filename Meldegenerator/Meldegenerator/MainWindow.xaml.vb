@@ -18,6 +18,7 @@ Class MainWindow
     Dim WithEvents bgw As New BackgroundWorker
     Dim gerneriere_excel As New XML
     Public Übergabeparameter As New List(Of Object)
+    Dim Abbruch As Boolean
 
 
 
@@ -122,7 +123,10 @@ Class MainWindow
     End Sub
 
 
-
+    Dim MyProjekt As Project
+    Dim MyTiaPortal As TiaPortal
+    Dim TIAoffen As Boolean = False
+    Dim TIAProjektoffen As Boolean = False
 
 
 
@@ -134,18 +138,28 @@ Class MainWindow
 
         Dim pfad As String = Convert.ToString(e.Argument)
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(10)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
 
+        MyTiaPortal = New TiaPortal(TiaPortalMode.WithoutUserInterface)
+        TIAoffen = True
 
-        Dim MyTiaPortal = New TiaPortal(TiaPortalMode.WithoutUserInterface)
-
-
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(20)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
-        Dim MyProjekt = MyTiaPortal.Projects.Open(pfad)
+        MyProjekt = MyTiaPortal.Projects.Open(pfad)
+        TIAProjektoffen = True
 
 
         Dim CPU_Namen As New List(Of String)
@@ -156,8 +170,13 @@ Class MainWindow
 
         Dim Ausgewaehlte_CPU_Liste As New List(Of ControllerTarget)
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(30)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
         For Each Device In MyProjekt.Devices
 
@@ -190,8 +209,13 @@ Class MainWindow
         Next
 
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(40)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
         'Aufruf Backgroundworker Progrss changed für bearbeitung der Oberfläche
 
@@ -227,8 +251,13 @@ Class MainWindow
 
         'Exportordner Erstellen und Pfad vorgeben
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(50)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
         Dim XML_pfad As String
 
@@ -254,8 +283,13 @@ Class MainWindow
 
 
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(60)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
         'Baustein Suchen und Exportieren
 
@@ -277,6 +311,7 @@ Class MainWindow
                     End Try
                 Else
                     MsgBox("Meldebaustein nicht übersetzt")
+                    Abbruch = True
                 End If
                 Err_Meldebaustein = False
                 gerneriere_excel.DBNummer = Baustein.Number
@@ -286,11 +321,17 @@ Class MainWindow
 
         If Err_Meldebaustein Then
             MsgBox("Kein Meldebaustein im Programm-Ordner gefunden. Bitte Baustein 'Meldungen' im Bausteinordner (ohne Unterordner) anlegen ")
+            Abbruch = True
         End If
 
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(65)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
 
         'Datentypen exportieren
@@ -313,29 +354,46 @@ Class MainWindow
                         End Try
                     Else
                         MsgBox("Datentyp: " & Datatype.Name & " nicht übersetzt")
+                        Abbruch = True
                     End If
                 Next
             End If
         Next
 
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(70)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
         MyProjekt.Close()
+        TIAProjektoffen = False
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(75)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
         MyTiaPortal.Dispose()
-
+        TIAoffen = False
 
         'Ausführung der Generierung der Excel-Tabelle
 
         gerneriere_excel.CPUnummer = (CPU_Nr + 1)
 
+        'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(90)
         System.Threading.Thread.Sleep(100)
+        If Abbruch = True Then
+            GoTo Abgebrochen
+        End If
+        '++++++++++++++++++++++++++++++++++++++++++++
 
 
         Try
@@ -347,6 +405,26 @@ Class MainWindow
 
         bgw.ReportProgress(95)
         System.Threading.Thread.Sleep(100)
+
+
+
+
+Abgebrochen:
+        If Abbruch = True Then
+
+            If TIAProjektoffen Then
+                MyProjekt.Close()
+
+            End If
+
+            If TIAoffen Then
+                MyTiaPortal.Dispose()
+
+            End If
+
+        End If
+
+
 
 
     End Sub
@@ -378,51 +456,52 @@ Class MainWindow
             End If
         End If
 
+        If Abbruch = False Then
+            If e.ProgressPercentage = 10 Then
+                PBar.LBAnzahlTITEL.Content = "Öffne TIA"
+                ProjektÖffnen.IsEnabled = False
+            End If
 
-        If e.ProgressPercentage = 10 Then
-            PBar.LBAnzahlTITEL.Content = "Öffne TIA"
+            If e.ProgressPercentage = 20 Then
+                PBar.LBAnzahlTITEL.Content = "Öffne Projekt in TIA"
+            End If
+
+            If e.ProgressPercentage = 30 Then
+                PBar.LBAnzahlTITEL.Content = "Suche Steuerungen im Projekt"
+            End If
+
+            If e.ProgressPercentage = 40 Then
+                PBar.LBAnzahlTITEL.Content = "Steuerungen listen / auswählen"
+            End If
+
+            If e.ProgressPercentage = 45 Then
+                PBar.LBAnzahlTITEL.Content = "Gewählte Stuerung wird ausgelesen"
+            End If
+
+            If e.ProgressPercentage = 50 Then
+                PBar.LBAnzahlTITEL.Content = "Erstelle XML Export-Pfad"
+            End If
+
+            If e.ProgressPercentage = 60 Then
+                PBar.LBAnzahlTITEL.Content = "Exportiere Baustein"
+            End If
+
+            If e.ProgressPercentage = 65 Then
+                PBar.LBAnzahlTITEL.Content = "Exportiere Datentypen"
+            End If
+
+            If e.ProgressPercentage = 70 Then
+                PBar.LBAnzahlTITEL.Content = "Schließe Projekt in TIA"
+            End If
+
+            If e.ProgressPercentage = 75 Then
+                PBar.LBAnzahlTITEL.Content = "Schließe TIA Portal"
+            End If
+
+            If e.ProgressPercentage = 90 Then
+                PBar.LBAnzahlTITEL.Content = "XML´s auslesen und Excel-Tabelle erstellen"
+            End If
         End If
-
-        If e.ProgressPercentage = 20 Then
-            PBar.LBAnzahlTITEL.Content = "Öffne Projekt in TIA"
-        End If
-
-        If e.ProgressPercentage = 30 Then
-            PBar.LBAnzahlTITEL.Content = "Suche Steuerungen im Projekt"
-        End If
-
-        If e.ProgressPercentage = 40 Then
-            PBar.LBAnzahlTITEL.Content = "Steuerungen listen / auswählen"
-        End If
-
-        If e.ProgressPercentage = 45 Then
-            PBar.LBAnzahlTITEL.Content = "Gewählte Stuerung wird ausgelesen"
-        End If
-
-        If e.ProgressPercentage = 50 Then
-            PBar.LBAnzahlTITEL.Content = "Erstelle XML Export-Pfad"
-        End If
-
-        If e.ProgressPercentage = 60 Then
-            PBar.LBAnzahlTITEL.Content = "Exportiere Baustein"
-        End If
-
-        If e.ProgressPercentage = 65 Then
-            PBar.LBAnzahlTITEL.Content = "Exportiere Datentypen"
-        End If
-
-        If e.ProgressPercentage = 70 Then
-            PBar.LBAnzahlTITEL.Content = "Schließe Projekt in TIA"
-        End If
-
-        If e.ProgressPercentage = 75 Then
-            PBar.LBAnzahlTITEL.Content = "Schließe TIA Portal"
-        End If
-
-        If e.ProgressPercentage = 90 Then
-            PBar.LBAnzahlTITEL.Content = "XML´s auslesen und Excel-Tabelle erstellen"
-        End If
-
 
         PBar.PGBarDaten.Value = e.ProgressPercentage
 
@@ -435,31 +514,42 @@ Class MainWindow
 
 
     Private Sub bgw_RunWorkerCompleted(ByVal sender As Object, ByVal e As System.ComponentModel.RunWorkerCompletedEventArgs) Handles bgw.RunWorkerCompleted
-        If PBar.PGBarDaten.Value = 0 Or PBar.PGBarDaten.Value = 10 Or PBar.PGBarDaten.Value = 20 Then
+        If PBar.PGBarDaten.Value = 0 Or PBar.PGBarDaten.Value = 10 Or PBar.PGBarDaten.Value = 20 And Not Abbruch Then
             MsgBox("Fehler:" & vbNewLine & "- TIA Openness nicht installiert" & vbNewLine & "- TIA Openness Benutzereinstellungen fehlen" & vbNewLine & "- .Net Framework 4.0 oder höher installieren")
+            Abbruch = True
         ElseIf PBar.PGBarDaten.Value = 95 Then
 
             PBar.LBAnzahlTITEL.Content = "Fertig"
             PBar.PGBarDaten.Value = 100
             Ordner_öffnen.IsEnabled = True
 
+        End If
+
+        If Abbruch = True Then
+
+            PBar.LBAnzahlTITEL.Content = "Generierung Abgebrochen"
+            PBar.PGBarDaten.Value = 100
+            Abbruch = False
 
         End If
+
+        TIAProjektoffen = False
+        TIAoffen = False
+        ProjektÖffnen.IsEnabled = True
+
     End Sub
 
 
     Private Sub Abbrechen_Click(sender As Object, e As RoutedEventArgs)
 
-        bgw.CancelAsync()
+        Abbruch = True
 
-
-        PBar.LBAnzahlTITEL.Content = "Wird Abgebrochen"
+        PBar.LBAnzahlTITEL.Content = "wird Abgebrochen"
         PBar.PGBarDaten.Value = 100
 
-
-
-
     End Sub
+
+
 
     Private Sub Ordner_öffnen_Click(sender As Object, e As RoutedEventArgs)
 
