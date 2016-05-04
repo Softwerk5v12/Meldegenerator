@@ -92,6 +92,8 @@ Public Class XML
 
         _StatusChanged("Calculate DB Address")
 
+
+
         If AddressBit >= 15 Then
             AddressBit = 0
 
@@ -116,7 +118,7 @@ Public Class XML
         _StatusChanged("XML initialisieren")
 
 
-        CountDBAdresse()
+        '  CountDBAdresse()
 
         Dim SelectionsElemente As IEnumerable(Of XElement) =
         From element In Interface_Sections.Elements(SiemensNamespace + "Sections")
@@ -137,11 +139,11 @@ Public Class XML
 
             If AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "M_*" Then
                 MeldungenGenerieren(AktuelleMeldeklasse)
-                AddressBit = 7
+                AddressBit = 6
                 CountDBAdresse()
             ElseIf AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "S_*" Then
                 MeldungenGenerieren(AktuelleMeldeklasse)
-                AddressBit = 7
+                AddressBit = 6
                 CountDBAdresse()
             Else
 
@@ -171,18 +173,21 @@ Public Class XML
 
 
                 If Meldung.@Datatype.ToString = "Bool" Then
+
                     If MeldungsBoolafter_others = True Then
-                        AddressBit = 7
+                        AddressBit = 6
                         CountDBAdresse()
                         MeldungsBoolafter_others = False
                     End If
+                    CountDBAdresse()
                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                       .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+
                     ID = ID + 1
-                    CountDBAdresse()
+
                 ElseIf Meldung.@Datatype.ToString = "Struct" Then
-                    AddressBit = 7
+                    AddressBit = 6
                     CountDBAdresse()
 
                     MeldungsBoolafter_others = True
@@ -191,19 +196,20 @@ Public Class XML
                     Dim StructElement = (From element In Meldung.Nodes Select element)
 
                     For i As Integer = 1 To StructElement.Count - 1
+                        CountDBAdresse()
                         Dim StructMeldung As XElement = StructElement.ElementAt(i)
 
                         Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                          .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                         .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
-                        CountDBAdresse()
+
                         Meldungcounter = Meldungcounter + 1
 
                     Next
 
                 ElseIf Meldung.@Datatype.ToString Like "Array*" Then
-                    AddressBit = 7
+                    AddressBit = 6
                     CountDBAdresse()
                     MeldungsBoolafter_others = True
                     ' MsgBox("Array noch nicht ausprogrammiert")
@@ -233,12 +239,13 @@ Public Class XML
                         Case "Byte"
                             For i As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
                                 '  MsgBox(Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value)
-                                For j = 0 To 7
+                                For j = 0 To 6
+                                    CountDBAdresse()
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.FirstAttribute.Value & ID,
                                                                             .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                                                                           .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                                     ID = ID + 1
-                                    CountDBAdresse()
+
                                 Next
                             Next
                     End Select
@@ -246,7 +253,7 @@ Public Class XML
                     '   Console.WriteLine(StructElement.Count)
                 Else
                     MeldungsBoolafter_others = True
-                    AddressBit = 7
+                    AddressBit = 6
                     CountDBAdresse()
                     Dim TypName As String
 
@@ -270,12 +277,13 @@ Public Class XML
 
 
                     For Each i As HMIAlarms In LO_Type
-
+                        CountDBAdresse()
                         Meldungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & i.AlarmText,
                        .Meldeklasse = Meldeklassenname, .Name = i.Name & ID, .Datentyp = i.Datentyp,
                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
-                        CountDBAdresse()
+
+
 
                     Next
 
@@ -335,16 +343,16 @@ Public Class XML
 
         '  Dim LO_TypStörungen As New List(Of HMIAlarms)
 
-        Dim TypName As String = Nothing
+        ' Dim TypName As String = Nothing
         For i As Integer = 0 To Typklassen.Count - 1
 
             Dim Typmeldungen As XElement = Typklassen.ElementAt(i)
 
 
-            TypName = Typmeldungen.FirstAttribute.Value
+            ' TypName = Typmeldungen.FirstAttribute.Value
 
             ' Console.WriteLine(Name.Value)
-            Datentypen.Add(New HMIAlarms With {.AlarmText = TypName & Typmeldungen.Descendants(SiemensNamespace + "MultiLanguageText").Value,
+            Datentypen.Add(New HMIAlarms With {.AlarmText = Typmeldungen.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                  .Name = Typmeldungen.FirstAttribute.Value, .Datentyp = Typmeldungen.LastAttribute.Value, .Typname = Name.Value})
 
 
@@ -463,19 +471,24 @@ Public Class XML
             'End If
             wkbk.SaveAs(filePath)
 
+
+            wkbk.Close()
             sheet = Nothing
             wkbk = Nothing
 
             ' Close Excel.
+
+
             excelApp.Quit()
             excelApp = Nothing
+
             _StatusChanged("Fertig")
         Catch ex As System.Runtime.InteropServices.COMException
             _StatusChanged("Fehler beim EXCEL speichern")
             MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
         End Try
 
-        '  MsgBox("Fertig")
+        MsgBox("Fertig")
     End Sub
 
 End Class
