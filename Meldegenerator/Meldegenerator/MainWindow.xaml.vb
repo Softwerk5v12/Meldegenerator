@@ -170,12 +170,16 @@ Class MainWindow
                 devitemAggregation = Device.DeviceItems
                 devitemassosiation = Device.Elements
 
+                Dim index As Integer = 0
+
                 'CPUs im Projekt suchen
                 For Each devitem In devitemAggregation
                     If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
 
-                        CPU_Namen.Add(devitem.Name)
-                        Ausgewaehlte_CPU_Liste.Add(devitem)
+                        CPU_Namen.Insert(index, devitem.Name)
+                        Ausgewaehlte_CPU_Liste.Insert(index, devitem)
+
+                        index = index + 1
 
                     End If
                 Next
@@ -337,6 +341,7 @@ Class MainWindow
             gerneriere_excel.RunXML()
         Catch ex As Exception
             MsgBox(ex.ToString)
+            bgw.CancelAsync()
         End Try
 
         bgw.ReportProgress(95)
@@ -440,6 +445,7 @@ Class MainWindow
 
         End If
     End Sub
+
 
     Private Sub Abbrechen_Click(sender As Object, e As RoutedEventArgs)
 
