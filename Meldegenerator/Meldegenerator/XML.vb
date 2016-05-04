@@ -199,8 +199,8 @@ Public Class XML
                         CountDBAdresse()
                         Dim StructMeldung As XElement = StructElement.ElementAt(i)
 
-                        Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
-                         .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
+                        Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
+                         .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = StructMeldung.@Datatype.ToString,
                         .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                         ID = ID + 1
 
@@ -237,14 +237,75 @@ Public Class XML
 
                     Select Case GETDatatyp
                         Case "Byte"
-                            For i As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
+                            For Arraynummer As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
                                 '  MsgBox(Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value)
-                                For j = 0 To 6
+                                For j = 0 To 7
                                     CountDBAdresse()
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.FirstAttribute.Value & ID,
                                                                             .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                                                                           .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
                                     ID = ID + 1
+
+                                Next
+                            Next
+                        Case "Struct"
+                            For Arraynummer As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
+                                AddressBit = 6
+                                CountDBAdresse()
+                                MeldungsBoolafter_others = True
+                                MeldungStructName = Meldung.FirstAttribute.Value
+
+                                Dim StructElement = (From element In Meldung.Nodes Select element)
+
+                                For i As Integer = 0 To StructElement.Count - 1
+                                    CountDBAdresse()
+                                    Dim StructMeldung As XElement = StructElement.ElementAt(i)
+
+                                    Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & Arraynummer & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
+                                    .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = StructMeldung.@Datatype.ToString,
+                                    .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                                    ID = ID + 1
+
+                                    Meldungcounter = Meldungcounter + 1
+
+                                Next
+                            Next
+
+                        Case Else ' Datentypen 
+                            For Arraynummer As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
+                                AddressBit = 6
+                                CountDBAdresse()
+                                MeldungsBoolafter_others = True
+
+                                Dim TypName As String
+
+                                TypName = Meldung.FirstAttribute.Value
+
+
+
+                                Const quote As String = """"
+                                Dim TyponeHochkomma As String = GETDatatyp.Replace(quote, "")
+
+                                Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma)
+
+
+                                ' Console.WriteLine("Meldung" & TyponeHochkomma)
+                                'Catch ex As Exception
+                                '    MsgBox("Datenty nicht vorhanden")
+                                'End Try
+                                If LO_Type.Count = 0 Then
+                                    MsgBox("Datentyp: " & Meldung.LastAttribute.Value & " nicht gefunden")
+                                End If
+
+
+                                For Each i As HMIAlarms In LO_Type
+                                    CountDBAdresse()
+                                    Meldungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & Arraynummer & " " & i.AlarmText,
+                                   .Meldeklasse = Meldeklassenname, .Name = i.Name & ID, .Datentyp = i.Datentyp,
+                                   .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                                    ID = ID + 1
+
+
 
                                 Next
                             Next
@@ -488,7 +549,7 @@ Public Class XML
             MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
         End Try
 
-        MsgBox("Fertig")
+        '  MsgBox("Fertig")
     End Sub
 
 End Class
