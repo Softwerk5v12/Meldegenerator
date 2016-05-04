@@ -14,9 +14,9 @@ Imports System
 
 
 Class MainWindow
-
+    Property Version As String = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build & "." & My.Application.Info.Version.Revision
     Dim WithEvents bgw As New BackgroundWorker
-    Dim gerneriere_excel As New XML
+    Dim generiere_excel As New XML
     Public Übergabeparameter As New List(Of Object)
     Dim Abbruch As Boolean
 
@@ -249,6 +249,7 @@ Class MainWindow
 
 
 
+
         'Exportordner Erstellen und Pfad vorgeben
 
         'Report ausgeben, prüfen ob abgebrochen wurde
@@ -314,7 +315,7 @@ Class MainWindow
                     Abbruch = True
                 End If
                 Err_Meldebaustein = False
-                gerneriere_excel.DBNummer = Baustein.Number
+                generiere_excel.DBNummer = Baustein.Number
             End If
 
         Next
@@ -385,7 +386,8 @@ Class MainWindow
 
         'Ausführung der Generierung der Excel-Tabelle
 
-        gerneriere_excel.CPUnummer = (CPU_Nr + 1)
+        generiere_excel.CPUnummer = (CPU_Nr + 1)
+        generiere_excel.CPUName = CPU_Namen.Item(CPU_Nr)
 
         'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(90)
@@ -397,7 +399,7 @@ Class MainWindow
 
 
         Try
-            gerneriere_excel.RunXML()
+            generiere_excel.RunXML()
         Catch ex As Exception
             MsgBox(ex.ToString)
             bgw.CancelAsync()
