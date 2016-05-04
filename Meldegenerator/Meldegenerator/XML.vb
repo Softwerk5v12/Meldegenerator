@@ -36,7 +36,7 @@ Public Class XML
 
     Property CPUnummer As Integer = 1
     Property DBNummer As Integer = 260
-
+    Property CPUName As String = ""
     Property Status As String
 
 
@@ -434,7 +434,7 @@ Public Class XML
         '   excelApp.Run()
         ExcelDatenEinfügen()
 
-        ExcelSpeichern(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\HMIAlarms.xlsx")
+        ExcelSpeichern(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\HMIAlarms_" & CPUName & ".xlsx")
         ' Excel._Worksheet = (Excel.Worksheet)
         'Property ExcelFile As String
         '   Property ExcelBlatt As Byte
