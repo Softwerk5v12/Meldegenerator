@@ -94,7 +94,7 @@ Class MainWindow
 
 
 
-    ' Dim _xml As New XML
+    '  Dim _xml As New XML
 
     Private Sub ProjektÖffnen_Click(sender As Object, e As RoutedEventArgs)
         Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
@@ -118,7 +118,7 @@ Class MainWindow
             MsgBox("Generierung Abgebrochen")
         End If
 
-        '   _xml.RunXML()
+        ' _xml.RunXML()
 
     End Sub
 
