@@ -47,26 +47,35 @@ Public Class XML
 
     Dim TagName As String = "Trigger_AT_" & CPUnummer.ToString & "_DB"
 
-    Friend XMLFile As XDocument
-    Public Sub RunXML()
 
+    Public Sub RunXML()
+        Dim XMLFile As XDocument
         _StatusChanged("Load XML")
 
         For Each file As String In Directory.GetFiles(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Datentypen")
             GetDatatyp(file)
         Next
+
         Try
             XMLFile = XDocument.Load(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Meldungen.xml")
+
+
+            Dim Interface_Sections As XElement =
+            (From el In XMLFile.<Document>.<SW.DataBlock>.<AttributeList>.<Interface>
+             Select el).First
+            '   MsgBox(XMLFile.Elements.Count)
+            GetHMIMeldungen(Interface_Sections)
+
         Catch ex As Exception
             _StatusChanged("Fehler beim XML öffnen")
         End Try
 
+
+
+
         CreateWorkbook()
-
-        GetHMIMeldungen()
-
-
-
+        'XMLFile.Root.Remove()
+        '      XMLFile.Save(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Meldungen.xml")
         Write_Excel()
 
 
@@ -103,12 +112,10 @@ Public Class XML
 
     Dim ID As Integer = CPUnummer * 10000
     Dim SiemensNamespace As XNamespace = "http://www.siemens.com/automation/Openness/SW/Interface/v1" ' must match declaration In document
-    Private Sub GetHMIMeldungen()
+    Private Sub GetHMIMeldungen(ByVal Interface_Sections As XElement)
         _StatusChanged("XML initialisieren")
 
-        Dim Interface_Sections As XElement =
-            (From el In XMLFile.<Document>.<SW.DataBlock>.<AttributeList>.<Interface>
-             Select el).First
+
         CountDBAdresse()
 
         Dim SelectionsElemente As IEnumerable(Of XElement) =
@@ -467,7 +474,8 @@ Public Class XML
             _StatusChanged("Fehler beim EXCEL speichern")
             MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
         End Try
-        MsgBox("Fertig")
+
+        '  MsgBox("Fertig")
     End Sub
 
 End Class
