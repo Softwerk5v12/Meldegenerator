@@ -4,27 +4,15 @@ Imports System.Environment
 Imports Excel = Microsoft.Office.Interop.Excel
 
 
-
-
-
-
+''' <summary>
+''' Öffnent das exportierte XML file liest die benötigten Tags aus, und erstellt ein Importierbares Excel
+''' Erteller: Manfred Baminger
+''' Benötigte Parameter
+''' 
+''' </summary>
+''' 
 Public Class XML
 
-
-    Const Column0_A As String = "ID"
-    Const Column1_B As String = "Name"
-    Const Column2_C As String = "Event text [de-DE], Alarm text"
-    Const Column3_D As String = "FieldInfo [Alarm text]"
-    Const Column4_E As String = "Class"
-    Const Column5_F As String = "Trigger tag"
-    Const Column6_G As String = "Trigger bit"
-    Const Column7_H As String = "Acknowledgement tag"
-    Const Column8_I As String = "Acknowledgement bit"
-    Const Column9_J As String = "PLC acknowledgement tag"
-    Const Column10_K As String = "PLC acknowledgement bit"
-    Const Column11_L As String = "Group"
-    Const Column12_M As String = "Report"
-    Const Column13_N As String = "Info text [de-DE], Info text"
 
 
 
@@ -34,21 +22,55 @@ Public Class XML
         RaiseEvent StatusChaged()
     End Sub
 
+
+    'benötigte Values
     Property CPUnummer As Integer = 1
     Property DBNummer As Integer = 260
     Property CPUName As String = ""
+
+    'Rückgabewerte
     Property Status As String
     Property HMIVariableDatentyp As String = ""
     Property HMIVariablenName As String = ""
-    Dim Meldungen As New List(Of HMIAlarms)
 
 
-    Dim Datentypen As New List(Of HMIAlarms)
-
-    Dim TagName As String = "Trigger_AT_" & CPUnummer.ToString & "_DB"
 
 
+    ''' <summary>
+    ''' in disem Container werden alle Störungen und Meldungen zusammengefasst
+    ''' </summary>
+    ''' <remarks><seealso cref="HMIAlarms"/></remarks>
+    Private Meldungen As New List(Of HMIAlarms)
+    ''' <summary>
+    ''' Ein Container für alle Datentypen
+    ''' </summary>
+    Private Datentypen As New List(Of HMIAlarms)
+
+
+    'Variablen declaration class global
+    Private TagName As String
+    Private AddressWord As Integer = -1
+    Private AddressBit As Integer = 7
+    Private AddressBitforArray As Integer
+    Private AddressTag As String
+
+
+    ''' <summary>
+    ''' Runs XML read and Excel erstellen
+    ''' Es müssen die Propertys :
+    ''' <remarks><seealso cref="CPUnummer"/>
+    ''' <seealso cref="DBNummer"/>
+    ''' <seealso cref="_CPUName"/>
+    ''' </remarks>
+    ''' mit Werten versorgt sein.
+    ''' </summary>
     Public Sub RunXML()
+
+        AddressWord = -1
+        AddressBit = 7
+
+
+        'Proof Directory file name and open XML file
         Dim XMLFile As XDocument
         _StatusChanged("Load XML")
         HMIVariableDatentyp = "super"
@@ -60,22 +82,31 @@ Public Class XML
             XMLFile = XDocument.Load(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Meldungen.xml")
 
 
+            'Gibt das XElement Intervace_Sections zurück
+            '(Alle Nodes vor dem Namespace, Alle folgenden Nodes müssen mit dem Namespace angesprochenwerden.)
             Dim Interface_Sections As XElement =
             (From el In XMLFile.<Document>.<SW.DataBlock>.<AttributeList>.<Interface>
              Select el).First
-            '   MsgBox(XMLFile.Elements.Count)
+
+            'ruft die Eigentliche XML bearbeitung auf
             GetHMIMeldungen(Interface_Sections)
 
         Catch ex As Exception
             _StatusChanged("Fehler beim XML öffnen")
+
         End Try
 
+
+
+        'rückgabewerte Adresse und Tagname 
         HMIVariableDatentyp = "Array [0.." & AddressWord & "] Of Word"
         HMIVariablenName = AddressTag.Replace("""", "")
 
+
+        'erstellt eine Excel mappe und  Areitsblatt 
         CreateWorkbook()
-        'XMLFile.Root.Remove()
-        '      XMLFile.Save(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Meldungen.xml")
+
+        'Schreibt die Meldungen in das Excel  File
         Write_Excel()
 
 
@@ -83,42 +114,55 @@ Public Class XML
     End Sub
 
 
-    Private AddressWord As Integer = -1
-    ' Private AddressName As Integer = -1
-    Private AddressBit As Integer = 7
-    Private AddressBitforArray As Integer
-    Private AddressTag As String
 
-    Private Sub CountDBAdresse()
+    ''' <summary>
+    ''' Mit jedem Durchlauf wird das AddressBit um eins erhöht 
+    ''' und beim 8.bit wird das Address Word um eins erhöht
+    ''' somit kann ich die Tatsächliche Array Pos errechnen
+    ''' 
+    ''' Soll ein ein Word   
+    ''' </summary>
+    Private Sub CountDBAdresse(Optional ByVal Wordhoch As Boolean = False)
 
         _StatusChanged("Calculate DB Address")
 
 
+        If Wordhoch = False Then
 
-        If AddressBit >= 15 Then
-            AddressBit = 0
+            If AddressBit >= 15 Then
+                AddressBit = 0
 
+            Else
+                AddressBit = AddressBit + 1
+            End If
+
+            If AddressBit = 8 Then
+                AddressWord = AddressWord + 1
+                '  AddressName = AddressName + 1
+            End If
+
+
+            AddressBitforArray = AddressBit + ((AddressWord) * 16)
+
+
+            TagName = "Trigger_AT_" & CPUName & "_DB"
+
+            AddressTag = """" & TagName & DBNummer & """"
         Else
-            AddressBit = AddressBit + 1
-        End If
-
-        If AddressBit = 8 Then
             AddressWord = AddressWord + 1
-            '  AddressName = AddressName + 1
+            AddressBit = 8
         End If
-
-
-        AddressBitforArray = AddressBit + ((AddressWord) * 16)
-
-
-        TagName = "Trigger_AT_" & CPUnummer.ToString & "_DB"
-
-        AddressTag = """" & TagName & DBNummer & """"
     End Sub
 
-
+    'Die start ID für die Jeweilige CPU
     Dim ID As Integer = CPUnummer * 10000
+    'der namespace der für alle untergeordneten Nodes nötig ist
     Dim SiemensNamespace As XNamespace = "http://www.siemens.com/automation/Openness/SW/Interface/v1" ' must match declaration In document
+
+    ''' <summary>
+    ''' Abarbeitung XML
+    ''' </summary>
+    ''' <param name="Interface_Sections">Der Node mit dem Namen InterfaceSections</param>
     Private Sub GetHMIMeldungen(ByVal Interface_Sections As XElement)
         _StatusChanged("XML initialisieren")
 
@@ -139,21 +183,24 @@ Public Class XML
         Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
         For i As Integer = 0 To Meldeklassen.Count - 1
 
-
             Dim AktuelleMeldeklasse = Meldeklassen.ElementAt(i).Elements
+            MeldungenGenerieren(AktuelleMeldeklasse)
+            AddressBit = 6
+            CountDBAdresse()
 
-            If AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "M_*" Then
-                MeldungenGenerieren(AktuelleMeldeklasse)
-                AddressBit = 6
-                CountDBAdresse()
-            ElseIf AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "S_*" Then
-                MeldungenGenerieren(AktuelleMeldeklasse)
-                AddressBit = 6
-                CountDBAdresse()
-            Else
 
-                MsgBox("DIe Meldeklasse ist falsch benannt, der Klassenname muss mit ""M_"" oder ""S_"" beginnen")
-            End If
+            'Dim AktuelleMeldeklasse = Meldeklassen.ElementAt(i).Elements
+
+            'If AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "M_*" Then
+
+            'ElseIf AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "S_*" Then
+            '    MeldungenGenerieren(AktuelleMeldeklasse)
+            '    AddressBit = 6
+            '    CountDBAdresse()
+            'Else
+
+            '    MsgBox("DIe Meldeklasse ist falsch benannt, der Klassenname muss mit ""M_"" oder ""S_"" beginnen")
+            'End If
 
         Next
 
@@ -447,6 +494,26 @@ Public Class XML
 
     End Sub
 
+
+
+
+
+    'constanten für Excel Header
+    Const Column0_A As String = "ID"
+    Const Column1_B As String = "Name"
+    Const Column2_C As String = "Event text [de-DE], Alarm text"
+    Const Column3_D As String = "FieldInfo [Alarm text]"
+    Const Column4_E As String = "Class"
+    Const Column5_F As String = "Trigger tag"
+    Const Column6_G As String = "Trigger bit"
+    Const Column7_H As String = "Acknowledgement tag"
+    Const Column8_I As String = "Acknowledgement bit"
+    Const Column9_J As String = "PLC acknowledgement tag"
+    Const Column10_K As String = "PLC acknowledgement bit"
+    Const Column11_L As String = "Group"
+    Const Column12_M As String = "Report"
+    Const Column13_N As String = "Info text [de-DE], Info text"
+
     Dim excelApp As Excel.Application = Nothing
     Dim wkbk As Excel.Workbook
     Dim sheet As Excel.Worksheet
@@ -554,7 +621,7 @@ Public Class XML
             MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
         End Try
 
-        MsgBox("Fertig")
+        ' MsgBox("Fertig")
     End Sub
 
 End Class
