@@ -526,8 +526,10 @@ Abgebrochen:
             PBar.LBAnzahlTITEL.Content = "Fertig"
             PBar.PGBarDaten.Value = 100
             Ordner_öffnen.IsEnabled = True
-            TB_HMIVariableName.Text = generiere_excel.HMIVariable
+            TB_HMIVariableName.Text = generiere_excel.HMIVariablenName
+            TB_HMIVariableDatentyp.Text = generiere_excel.HMIVariableDatentyp
             SP_HMIVariableName.Visibility = Visibility.Visible
+            SP_HMIVariableDatentyp.Visibility = Visibility.Visible
         End If
 
         If Abbruch = True Then

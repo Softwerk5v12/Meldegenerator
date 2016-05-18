@@ -16,9 +16,14 @@
                 <Button x:Name="Ordner_öffnen" Click="Ordner_öffnen_Click" Content="Ordner öffnen" Width="100" Height="70" Margin="10"/>
                 <Button x:Name="Abbrechen" Click="Abbrechen_Click" Width="100" Height="70" Margin="10" Content="Abbrechen"/>
             </WrapPanel>
+            
             <StackPanel Name="SP_HMIVariableName" Orientation="Horizontal" Visibility="Collapsed">
                 <Label Content="HMI Variable:"/>
                 <TextBox IsReadOnly="True"  Name="TB_HMIVariableName"/>
+            </StackPanel>
+             <StackPanel Name="SP_HMIVariableDatentyp" Orientation="Horizontal" Visibility="Collapsed">
+                <Label Content="HMI Variable Datentyp:"/>
+                <TextBox IsReadOnly="True"  Name="TB_HMIVariableDatentyp"/>
             </StackPanel>
 
             <local:ProgressBar x:Name="PBar" />
