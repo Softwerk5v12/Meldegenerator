@@ -563,7 +563,13 @@ Abgebrochen:
                 Dim Doku As Object = My.Resources.Doku
                 File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
 
-                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf")
+                'Dim Dokupfad As String = "http:\\" & Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments).ToString & "\Meldegenerator_HMI_Alarms\Doku.pdf"
+
+                'Process.Start(Dokupfad)
+
+                Dim Hilfe As New Hilfe
+
+                Hilfe.Show()
 
             Catch ex As Exception
                 MsgBox(ex.ToString)

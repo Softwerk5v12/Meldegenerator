@@ -105,11 +105,18 @@
     <Compile Include="CPUAuswahl.xaml.vb">
       <DependentUpon>CPUAuswahl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Hilfe.xaml.vb">
+      <DependentUpon>Hilfe.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ProgressBar.xaml.vb">
       <DependentUpon>ProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="XML.vb" />
     <Page Include="CPUAuswahl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Hilfe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
