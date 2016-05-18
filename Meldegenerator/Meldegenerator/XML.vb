@@ -38,7 +38,7 @@ Public Class XML
     Property DBNummer As Integer = 260
     Property CPUName As String = ""
     Property Status As String
-
+    Property HMIVariable As String = "Fred"
 
     Dim Meldungen As New List(Of HMIAlarms)
 
