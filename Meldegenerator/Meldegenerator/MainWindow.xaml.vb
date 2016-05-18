@@ -178,33 +178,35 @@ Class MainWindow
         End If
         '++++++++++++++++++++++++++++++++++++++++++++
 
+
+
         For Each Device In MyProjekt.Devices
 
 
-            If Device.Name.Contains("S71500") Or Device.Name.Contains("S71200") Then
+            'If Device.TypeName.Contains("1500") Or Device.TypeName.Contains("1200") Or Device.TypeName.Contains("300") Or Device.TypeName.Contains("400") Then
 
-                Dim devitemAggregation As IDeviceItemAggregation
+            Dim devitemAggregation As IDeviceItemAggregation
                 Dim devitemassosiation As IDeviceItemAssociation
                 Dim devitem As IDeviceItem
 
                 devitemAggregation = Device.DeviceItems
                 devitemassosiation = Device.Elements
 
-                Dim index As Integer = 0
+                'Dim index As Integer = 0
 
                 'CPUs im Projekt suchen
                 For Each devitem In devitemAggregation
                     If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
 
-                        CPU_Namen.Insert(index, devitem.Name)
-                        Ausgewaehlte_CPU_Liste.Insert(index, devitem)
+                        CPU_Namen.Add(devitem.Name)
+                        Ausgewaehlte_CPU_Liste.Add(devitem)
 
-                        index = index + 1
+                        'index = index + 1
 
                     End If
                 Next
 
-            End If
+            'End If
 
         Next
 
