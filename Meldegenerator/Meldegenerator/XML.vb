@@ -38,7 +38,7 @@ Public Class XML
     Property DBNummer As Integer = 260
     Property CPUName As String = ""
     Property Status As String
-    Property HMIVariable As String = "Fred"
+    Property HMIVariable As String = ""
 
     Dim Meldungen As New List(Of HMIAlarms)
 
@@ -51,7 +51,7 @@ Public Class XML
     Public Sub RunXML()
         Dim XMLFile As XDocument
         _StatusChanged("Load XML")
-
+        HMIVariable = "super"
         For Each file As String In Directory.GetFiles(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Datentypen")
             GetDatatyp(file)
         Next

@@ -405,6 +405,8 @@ Class MainWindow
             bgw.CancelAsync()
         End Try
 
+
+
         bgw.ReportProgress(95)
         System.Threading.Thread.Sleep(100)
 
@@ -524,7 +526,8 @@ Abgebrochen:
             PBar.LBAnzahlTITEL.Content = "Fertig"
             PBar.PGBarDaten.Value = 100
             Ordner_öffnen.IsEnabled = True
-
+            TB_HMIVariableName.Text = generiere_excel.HMIVariable
+            SP_HMIVariableName.Visibility = Visibility.Visible
         End If
 
         If Abbruch = True Then
