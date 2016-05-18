@@ -26,6 +26,7 @@ Class MainWindow
 
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
+
         Ordner_öffnen.IsEnabled = False
 
         'erlaubt zugriff auf die windows form
@@ -35,7 +36,6 @@ Class MainWindow
 
 
         AddHandler AppDomain.CurrentDomain.AssemblyResolve, AddressOf MyResolveEventHandler
-
 
     End Sub
 
@@ -182,32 +182,22 @@ Class MainWindow
 
         For Each Device In MyProjekt.Devices
 
-
-            'If Device.TypeName.Contains("1500") Or Device.TypeName.Contains("1200") Or Device.TypeName.Contains("300") Or Device.TypeName.Contains("400") Then
-
             Dim devitemAggregation As IDeviceItemAggregation
-                Dim devitemassosiation As IDeviceItemAssociation
-                Dim devitem As IDeviceItem
+            Dim devitemassosiation As IDeviceItemAssociation
+            Dim devitem As IDeviceItem
 
-                devitemAggregation = Device.DeviceItems
-                devitemassosiation = Device.Elements
+            devitemAggregation = Device.DeviceItems
+            devitemassosiation = Device.Elements
 
-                'Dim index As Integer = 0
+            'CPUs im Projekt suchen
+            For Each devitem In devitemAggregation
+                If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
 
-                'CPUs im Projekt suchen
-                For Each devitem In devitemAggregation
-                    If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
+                    CPU_Namen.Add(devitem.Name)
+                    Ausgewaehlte_CPU_Liste.Add(devitem)
 
-                        CPU_Namen.Add(devitem.Name)
-                        Ausgewaehlte_CPU_Liste.Add(devitem)
-
-                        'index = index + 1
-
-                    End If
-                Next
-
-            'End If
-
+                End If
+            Next
         Next
 
 
@@ -564,6 +554,17 @@ Abgebrochen:
 
         System.Diagnostics.Process.Start("explorer", Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms")
 
+    End Sub
+
+
+    Private Sub window_KeyDown(sender As Object, e As Input.KeyEventArgs)
+        If e.Key = Key.F1 Then
+
+            Dim Doku As Object = My.Resources.Doku
+            File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
+
+            Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf")
+        End If
     End Sub
 End Class
 
