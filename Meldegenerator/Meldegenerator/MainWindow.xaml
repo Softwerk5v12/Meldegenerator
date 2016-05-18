@@ -27,7 +27,7 @@
             </StackPanel>
 
             <local:ProgressBar x:Name="PBar" />
-            <Label x:Name="label" Content="Hilfe aufrufen mit F1" FontSize="8" Height="19" Margin="0,-12,0,-2" FontStyle="Italic" />
+            <Label x:Name="label" Content="Hilfe aufrufen mit &quot;F1&quot;" FontSize="10.667" Height="22" Margin="0,-14,0,-3" />
         </StackPanel>
     </Grid>
 </Window>
