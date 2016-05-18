@@ -38,8 +38,8 @@ Public Class XML
     Property DBNummer As Integer = 260
     Property CPUName As String = ""
     Property Status As String
-
-
+    Property HMIVariableDatentyp As String = ""
+    Property HMIVariablenName As String = ""
     Dim Meldungen As New List(Of HMIAlarms)
 
 
@@ -51,7 +51,7 @@ Public Class XML
     Public Sub RunXML()
         Dim XMLFile As XDocument
         _StatusChanged("Load XML")
-
+        HMIVariableDatentyp = "super"
         For Each file As String In Directory.GetFiles(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Datentypen")
             GetDatatyp(file)
         Next
@@ -70,8 +70,8 @@ Public Class XML
             _StatusChanged("Fehler beim XML öffnen")
         End Try
 
-
-
+        HMIVariableDatentyp = "Array [0.." & AddressWord & "] Of Word"
+        HMIVariablenName = AddressTag
 
         CreateWorkbook()
         'XMLFile.Root.Remove()
@@ -86,6 +86,7 @@ Public Class XML
     Private AddressWord As Integer = -1
     ' Private AddressName As Integer = -1
     Private AddressBit As Integer = 7
+    Private AddressBitforArray As Integer
     Private AddressTag As String
 
     Private Sub CountDBAdresse()
@@ -105,10 +106,10 @@ Public Class XML
             AddressWord = AddressWord + 1
             '  AddressName = AddressName + 1
         End If
-
+        AddressBitforArray = AddressBit * AddressWord
         TagName = "Trigger_AT_" & CPUnummer.ToString & "_DB"
 
-        AddressTag = """" & TagName & DBNummer & ".DBW" & AddressWord & """"
+        AddressTag = """" & TagName & DBNummer & """"
     End Sub
 
 
@@ -182,7 +183,7 @@ Public Class XML
                     CountDBAdresse()
                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                       .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
-                                      .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                                      .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
 
                     ID = ID + 1
 
@@ -201,7 +202,7 @@ Public Class XML
 
                         Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                          .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = StructMeldung.@Datatype.ToString,
-                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
                         ID = ID + 1
 
                         Meldungcounter = Meldungcounter + 1
@@ -243,7 +244,7 @@ Public Class XML
                                     CountDBAdresse()
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.FirstAttribute.Value & ID,
                                                                             .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
-                                                                          .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                                                                          .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
                                     ID = ID + 1
 
                                 Next
@@ -263,7 +264,7 @@ Public Class XML
 
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & Arraynummer & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                     .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = StructMeldung.@Datatype.ToString,
-                                    .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                                    .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
                                     ID = ID + 1
 
                                     Meldungcounter = Meldungcounter + 1
@@ -302,7 +303,7 @@ Public Class XML
                                     CountDBAdresse()
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & Arraynummer & " " & i.AlarmText,
                                    .Meldeklasse = Meldeklassenname, .Name = i.Name & ID, .Datentyp = i.Datentyp,
-                                   .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                                   .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
                                     ID = ID + 1
 
 
@@ -341,7 +342,7 @@ Public Class XML
                         CountDBAdresse()
                         Meldungen.Add(New HMIAlarms With {.AlarmText = TypName & " " & i.AlarmText,
                        .Meldeklasse = Meldeklassenname, .Name = i.Name & ID, .Datentyp = i.Datentyp,
-                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBit})
+                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
                         ID = ID + 1
 
 
