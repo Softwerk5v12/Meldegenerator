@@ -71,7 +71,7 @@ Public Class XML
         End Try
 
         HMIVariableDatentyp = "Array [0.." & AddressWord & "] Of Word"
-        HMIVariablenName = AddressTag
+        HMIVariablenName = AddressTag.Replace("""", "")
 
         CreateWorkbook()
         'XMLFile.Root.Remove()
@@ -106,7 +106,11 @@ Public Class XML
             AddressWord = AddressWord + 1
             '  AddressName = AddressName + 1
         End If
-        AddressBitforArray = AddressBit * AddressWord
+
+
+        AddressBitforArray = AddressBit + ((AddressWord) * 16)
+
+
         TagName = "Trigger_AT_" & CPUnummer.ToString & "_DB"
 
         AddressTag = """" & TagName & DBNummer & """"
@@ -550,7 +554,7 @@ Public Class XML
             MsgBox("Das Excel File konnte nicht gespeichert werden, es ist vielleicht geöffnet.")
         End Try
 
-        '  MsgBox("Fertig")
+        MsgBox("Fertig")
     End Sub
 
 End Class
