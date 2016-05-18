@@ -23,12 +23,12 @@ Public Class XML
     End Sub
 
 
-    'benötigte Values
+    'MAB:  benötigte Values
     Property CPUnummer As Integer = 1
     Property DBNummer As Integer = 260
     Property CPUName As String = ""
 
-    'Rückgabewerte
+    'MAB:  Rückgabewerte
     Property Status As String
     Property HMIVariableDatentyp As String = ""
     Property HMIVariablenName As String = ""
@@ -37,6 +37,7 @@ Public Class XML
 
 
     ''' <summary>
+    ''' MBA:
     ''' in disem Container werden alle Störungen und Meldungen zusammengefasst
     ''' </summary>
     ''' <remarks><seealso cref="HMIAlarms"/></remarks>
@@ -47,7 +48,7 @@ Public Class XML
     Private Datentypen As New List(Of HMIAlarms)
 
 
-    'Variablen declaration class global
+    'MAB:  Variablen declaration class global
     Private TagName As String
     Private AddressWord As Integer = -1
     Private AddressBit As Integer = 7
@@ -56,6 +57,7 @@ Public Class XML
 
 
     ''' <summary>
+    ''' MBA:
     ''' Runs XML read and Excel erstellen
     ''' Es müssen die Propertys :
     ''' <remarks><seealso cref="CPUnummer"/>
@@ -65,15 +67,17 @@ Public Class XML
     ''' mit Werten versorgt sein.
     ''' </summary>
     Public Sub RunXML()
-
+        'MBA:  Neue Startwerte zuweisen (nötig bei mehreren CPUs)
         AddressWord = -1
         AddressBit = 7
+        ID = CPUnummer * 10000
 
-
-        'Proof Directory file name and open XML file
+        'MAB:  Proof Directory file name and open XML file
         Dim XMLFile As XDocument
         _StatusChanged("Load XML")
-        HMIVariableDatentyp = "super"
+
+
+        'Datentypen auswerten und zur weiteren Verwendung in Container legen
         For Each file As String In Directory.GetFiles(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Datentypen")
             GetDatatyp(file)
         Next
@@ -82,13 +86,13 @@ Public Class XML
             XMLFile = XDocument.Load(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Meldungen.xml")
 
 
-            'Gibt das XElement Intervace_Sections zurück
-            '(Alle Nodes vor dem Namespace, Alle folgenden Nodes müssen mit dem Namespace angesprochenwerden.)
+            'MAB:  Gibt das XElement Intervace_Sections zurück
+            'MAB:  (Alle Nodes vor dem Namespace, Alle folgenden Nodes müssen mit dem Namespace angesprochenwerden.)
             Dim Interface_Sections As XElement =
             (From el In XMLFile.<Document>.<SW.DataBlock>.<AttributeList>.<Interface>
              Select el).First
 
-            'ruft die Eigentliche XML bearbeitung auf
+            'MAB:  ruft die Eigentliche XML bearbeitung auf
             GetHMIMeldungen(Interface_Sections)
 
         Catch ex As Exception
@@ -98,15 +102,15 @@ Public Class XML
 
 
 
-        'rückgabewerte Adresse und Tagname 
+        'MAB:  rückgabewerte Adresse und Tagname 
         HMIVariableDatentyp = "Array [0.." & AddressWord & "] Of Word"
         HMIVariablenName = AddressTag.Replace("""", "")
 
 
-        'erstellt eine Excel mappe und  Areitsblatt 
+        'MAB:  erstellt eine Excel mappe und  Areitsblatt 
         CreateWorkbook()
 
-        'Schreibt die Meldungen in das Excel  File
+        'MAB:  Schreibt die Meldungen in das Excel  File
         Write_Excel()
 
 
@@ -116,50 +120,48 @@ Public Class XML
 
 
     ''' <summary>
+    ''' MBA:
     ''' Mit jedem Durchlauf wird das AddressBit um eins erhöht 
     ''' und beim 8.bit wird das Address Word um eins erhöht
     ''' somit kann ich die Tatsächliche Array Pos errechnen
     ''' 
-    ''' Soll ein ein Word   
+    ''' Soll ein ein Adresswort hochgezählt werden wird das Adress bi manuell auf den Wert 6 geschrieben
+    '''    
     ''' </summary>
-    Private Sub CountDBAdresse(Optional ByVal Wordhoch As Boolean = False)
+    Private Sub CountDBAdresse()
 
         _StatusChanged("Calculate DB Address")
 
 
-        If Wordhoch = False Then
 
-            If AddressBit >= 15 Then
-                AddressBit = 0
+        If AddressBit >= 15 Then
+            AddressBit = 0
 
-            Else
-                AddressBit = AddressBit + 1
-            End If
-
-            If AddressBit = 8 Then
-                AddressWord = AddressWord + 1
-                '  AddressName = AddressName + 1
-            End If
-
-
-            AddressBitforArray = AddressBit + ((AddressWord) * 16)
-
-
-            TagName = "Trigger_AT_" & CPUName & "_DB"
-
-            AddressTag = """" & TagName & DBNummer & """"
         Else
-            AddressWord = AddressWord + 1
-            AddressBit = 8
+            AddressBit = AddressBit + 1
         End If
+
+        If AddressBit = 8 Then
+            AddressWord = AddressWord + 1
+
+        End If
+
+
+        AddressBitforArray = AddressBit + ((AddressWord) * 16)
+
+
+        TagName = "Trigger_AT_" & CPUName & "_DB"
+
+        AddressTag = """" & TagName & DBNummer & """"
     End Sub
 
-    'Die start ID für die Jeweilige CPU
+    'MAB:  Die start ID für die Jeweilige CPU
     Dim ID As Integer = CPUnummer * 10000
-    'der namespace der für alle untergeordneten Nodes nötig ist
+    'MAB:  der namespace der für alle untergeordneten Nodes nötig ist
     Dim SiemensNamespace As XNamespace = "http://www.siemens.com/automation/Openness/SW/Interface/v1" ' must match declaration In document
 
     ''' <summary>
+    ''' MBA:
     ''' Abarbeitung XML
     ''' </summary>
     ''' <param name="Interface_Sections">Der Node mit dem Namen InterfaceSections</param>
@@ -167,7 +169,7 @@ Public Class XML
         _StatusChanged("XML initialisieren")
 
 
-        '  CountDBAdresse()
+
 
         Dim SelectionsElemente As IEnumerable(Of XElement) =
         From element In Interface_Sections.Elements(SiemensNamespace + "Sections")
@@ -176,81 +178,82 @@ Public Class XML
         Dim SectionElement As XElement = SelectionsElemente.ElementAt(0)
 
 
-        Dim Selection = From element In SelectionsElemente.Elements(SiemensNamespace + "Section") Select element
+        'MBA:  im Node Section Liegen die "Meldeklassen" jeder untergeordnete Node repräsentiert eine MEldeklasse
+        Dim Section = From element In SelectionsElemente.Elements(SiemensNamespace + "Section") Select element
 
-        ID = CPUnummer * 10000
 
-        Dim Meldeklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
+        'MBA:  Nur die <Member> Elemente sind interressant hier werden nur die Elemente des Typs "Member" in einer Meldeklasse (Node) ausgewählt. 
+        Dim Meldeklassen = (From element In Section.Elements(SiemensNamespace + "Member") Select element)
+
+        ' für alle Meldeklassen Die Meldungen generieren
         For i As Integer = 0 To Meldeklassen.Count - 1
 
             Dim AktuelleMeldeklasse = Meldeklassen.ElementAt(i).Elements
             MeldungenGenerieren(AktuelleMeldeklasse)
             AddressBit = 6
             CountDBAdresse()
-
-
-            'Dim AktuelleMeldeklasse = Meldeklassen.ElementAt(i).Elements
-
-            'If AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "M_*" Then
-
-            'ElseIf AktuelleMeldeklasse.First.Parent.FirstAttribute.Value Like "S_*" Then
-            '    MeldungenGenerieren(AktuelleMeldeklasse)
-            '    AddressBit = 6
-            '    CountDBAdresse()
-            'Else
-
-            '    MsgBox("DIe Meldeklasse ist falsch benannt, der Klassenname muss mit ""M_"" oder ""S_"" beginnen")
-            'End If
-
         Next
 
     End Sub
 
 
-
+    'TODO: evt. Struct und Datentyp in ein eigenenes Sub (is bei array und normal immer das gleiche)
     Private Sub MeldungenGenerieren(ByVal Meldeklasse As IEnumerable(Of XElement))
+        'MBA:  Dieses Bit wird benötigt um nach einer Structur oder datentyps, eine Boolsche Variable ins nächste Word zu heben.
         Dim MeldungsBoolafter_others As Boolean = False
+
         Dim MeldungAlarmtext As String = Nothing
         Dim MeldungStructName As String = Nothing
         Dim Meldungcounter As Integer = 0
         _StatusChanged("Meldungen aus XML lesen")
 
+
+        'holt den Klassennamen aus dem ersten element des XML
         Dim Meldeklassenname As String = Meldeklasse.First.Value
-        'Dim Meldeklassenname As String = ""
+
         For Each Meldung As XElement In Meldeklasse
 
-            '  MsgBox(Meldung.Name.ToString)
+
+            'Nurr untergeordnete "Member" Elemete aud den gewählten "Meber" elementen abarbeiten
             If Meldung.Name = "{" & SiemensNamespace.ToString & "}Member" Then
 
-
-
+                'Wenn der Member vom Datentyp Bool ist dann:
+                ' Boolsche Meldungen generieren
                 If Meldung.@Datatype.ToString = "Bool" Then
 
+                    'Meldeword hochzählen wenn das bool nach einem Struct oder Datentyp oder array folgt
                     If MeldungsBoolafter_others = True Then
                         AddressBit = 6
                         CountDBAdresse()
                         MeldungsBoolafter_others = False
                     End If
                     CountDBAdresse()
+                    'die Werte am ende eines "Containers" einfügen
                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                       .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = Meldung.@Datatype.ToString,
                                       .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
 
                     ID = ID + 1
-
+                    'Wenn der Member vom Datentyp Struct ist dann:
+                    'alle Meldungen im Struct lesen generieren
                 ElseIf Meldung.@Datatype.ToString = "Struct" Then
                     AddressBit = 6
                     CountDBAdresse()
 
+                    'benötigt sollte nach dem Struct eine Bool Variable folgen (Adressierung)
                     MeldungsBoolafter_others = True
+
+                    'Structname aus dem Element lesen
                     MeldungStructName = Meldung.FirstAttribute.Value
 
+                    'Die Elemente im Node Struct "holen"
                     Dim StructElement = (From element In Meldung.Nodes Select element)
 
                     For i As Integer = 1 To StructElement.Count - 1
                         CountDBAdresse()
                         Dim StructMeldung As XElement = StructElement.ElementAt(i)
 
+                        'Werte hinzufügen
                         Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                          .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = StructMeldung.@Datatype.ToString,
                         .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
@@ -260,24 +263,27 @@ Public Class XML
 
                     Next
 
+
+                    'Wenn der Member vom Datentyp Array ist dann:
+                    'alle Meldungen im Struct lesen generieren
                 ElseIf Meldung.@Datatype.ToString Like "Array*" Then
                     AddressBit = 6
                     CountDBAdresse()
                     MeldungsBoolafter_others = True
-                    ' MsgBox("Array noch nicht ausprogrammiert")
+
                     Dim GETDatatyp As String = Meldung.@Datatype
 
                     Dim ArrayBeginn As String = Meldung.@Datatype
                     ArrayBeginn = ArrayBeginn.Substring(6)
                     ArrayBeginn = ArrayBeginn.Remove(1)
-                    'MsgBox(ArrayBeginn)
+
 
                     Dim ArrayEnde As String = Meldung.@Datatype
 
                     ArrayEnde = ArrayEnde.Substring(ArrayEnde.LastIndexOf("."))
                     ArrayEnde = ArrayEnde.Remove(ArrayEnde.IndexOf("]"))
                     ArrayEnde = ArrayEnde.Replace(".", "")
-                    'MsgBox(ArrayEnde)
+
 
 
 
@@ -285,12 +291,11 @@ Public Class XML
                     GETDatatyp = GETDatatyp.Remove(GETDatatyp.LastIndexOf("fo"))
                     GETDatatyp = StrReverse(GETDatatyp)
                     GETDatatyp = GETDatatyp.Replace(" ", "")
-                    'MsgBox(GETDatatyp)
+
 
                     Select Case GETDatatyp
                         Case "Byte"
                             For Arraynummer As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
-                                '  MsgBox(Meldung.Descendants(SiemensNamespace + "MultiLanguageText").Value)
                                 For j = 0 To 7
                                     CountDBAdresse()
                                     Meldungen.Add(New HMIAlarms With {.AlarmText = Meldung.FirstAttribute.Value & ID,
@@ -323,6 +328,7 @@ Public Class XML
                                 Next
                             Next
 
+                        ' 
                         Case Else ' Datentypen 
                             For Arraynummer As Integer = CInt(ArrayBeginn) To CInt(ArrayEnde)
                                 AddressBit = 6
@@ -341,10 +347,7 @@ Public Class XML
                                 Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma)
 
 
-                                ' Console.WriteLine("Meldung" & TyponeHochkomma)
-                                'Catch ex As Exception
-                                '    MsgBox("Datenty nicht vorhanden")
-                                'End Try
+
                                 If LO_Type.Count = 0 Then
                                     MsgBox("Datentyp: " & Meldung.LastAttribute.Value & " nicht gefunden")
                                 End If
@@ -363,7 +366,10 @@ Public Class XML
                             Next
                     End Select
 
-                    '   Console.WriteLine(StructElement.Count)
+                    'MBA:
+                    ' Datentypen auswerten
+                    ' Hier wird der Name des Datentyps mit den Datentypen im Container verglichen,
+                    ' bei übereinstimmung des namens werden die Meldungen hinzugefügt.
                 Else
                     MeldungsBoolafter_others = True
                     AddressBit = 6
@@ -379,11 +385,6 @@ Public Class XML
 
                     Dim LO_Type = (From Element In Datentypen Where Element.Typname = TyponeHochkomma)
 
-
-                    ' Console.WriteLine("Meldung" & TyponeHochkomma)
-                    'Catch ex As Exception
-                    '    MsgBox("Datenty nicht vorhanden")
-                    'End Try
                     If LO_Type.Count = 0 Then
                         MsgBox("Datentyp: " & Meldung.LastAttribute.Value & " nicht gefunden")
                     End If
@@ -396,8 +397,6 @@ Public Class XML
                        .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
                         ID = ID + 1
 
-
-
                     Next
 
                 End If
@@ -407,8 +406,9 @@ Public Class XML
 
     End Sub
 
-
-
+    'MBA:
+    'XML Datentypen in Container legen
+    'es Liegen alle Datentypen gesammelt in dem Container, es wird nur nach dem Namen ausgewählt.
     Private Sub GetDatatyp(ByVal Pfad As String)
         _StatusChanged("Datentypen auslesen")
 
@@ -426,25 +426,17 @@ Public Class XML
 
 
 
-
-        'Console.WriteLine(Name.Value)
-
         Dim Interface_Sections As XElement =
             (From el In XMLFile.<Document>.<SW.ControllerDatatype>.<AttributeList>.<Interface>
              Select el).First
 
 
 
-        'Dim zähler As Integer = 0
-        'For Each el As XElement In Interface_Sections
+
         Dim SelectionsElemente As IEnumerable(Of XElement) =
         From element In Interface_Sections.Elements(SiemensNamespace + "Sections")
         Select element
-        '    zähler = zähler + 1
 
-        '  Dim idf As IEnumerable(Of XElement) = SelectionsElemente.DescendantNodes
-
-        ' names.ElementAt(Random.Next(0, names.Length))
         Dim SectionElement As XElement = SelectionsElemente.ElementAt(0)
 
 
@@ -452,19 +444,13 @@ Public Class XML
         Dim Selection = From element In SelectionsElemente.Elements(SiemensNamespace + "Section") Select element
 
         Dim Typklassen = (From element In Selection.Elements(SiemensNamespace + "Member") Select element)
-        '   Console.WriteLine(SelectionElement.Descendants(SiemensNamespace + "MultiLanguageText").Skip(1).Take(20).Value)
 
-        '  Dim LO_TypStörungen As New List(Of HMIAlarms)
-
-        ' Dim TypName As String = Nothing
         For i As Integer = 0 To Typklassen.Count - 1
 
             Dim Typmeldungen As XElement = Typklassen.ElementAt(i)
 
 
-            ' TypName = Typmeldungen.FirstAttribute.Value
 
-            ' Console.WriteLine(Name.Value)
             Datentypen.Add(New HMIAlarms With {.AlarmText = Typmeldungen.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                                  .Name = Typmeldungen.FirstAttribute.Value, .Datentyp = Typmeldungen.LastAttribute.Value, .Typname = Name.Value})
 
@@ -477,19 +463,17 @@ Public Class XML
 
     End Sub
 
-
+    'Excel befüllen und speichern
     Public Sub Write_Excel()
 
         System.IO.Directory.CreateDirectory(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms")
 
 
-        '   excelApp.Run()
+
         ExcelDatenEinfügen()
 
         ExcelSpeichern(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\HMIAlarms_" & CPUName & ".xlsx")
-        ' Excel._Worksheet = (Excel.Worksheet)
-        'Property ExcelFile As String
-        '   Property ExcelBlatt As Byte
+
 
 
     End Sub
@@ -514,6 +498,10 @@ Public Class XML
     Const Column12_M As String = "Report"
     Const Column13_N As String = "Info text [de-DE], Info text"
 
+
+    'MBA:
+    'Ein neues Excel erstellen
+
     Dim excelApp As Excel.Application = Nothing
     Dim wkbk As Excel.Workbook
     Dim sheet As Excel.Worksheet
@@ -534,14 +522,12 @@ Public Class XML
 
     End Sub
 
-
+    ''' <summary>
+    ''' Alle Meldungen die im Container ligen werden in das Excel geschrieben.
+    ''' </summary>
     Sub ExcelDatenEinfügen()
         _StatusChanged("Daten In Excel File schreiben")
 
-
-        'For i = 1 To values.Length - 1
-        '    sheet.Cells(i, 1) = values(i)
-        'Next
         Dim i As Integer = 1
         sheet.Cells(1, 1) = Column0_A
         sheet.Cells(1, 2) = Column1_B
@@ -585,6 +571,7 @@ Public Class XML
     End Sub
 
 
+    'Excel Speichern und Schliessen. (Prozess)
     Sub ExcelSpeichern(ByVal filePath As String)
         _StatusChanged("Excel Speicher, abschliessen")
         Try
@@ -598,19 +585,13 @@ Public Class XML
             wkbk.SaveAs(filePath)
 
             excelApp.DisplayAlerts = False
-            'Dim folderPath = My.Computer.FileSystem.GetParentPath(filePath)
-            'If Not My.Computer.FileSystem.DirectoryExists(folderPath) Then
-            '    My.Computer.FileSystem.CreateDirectory(folderPath)
-            'End If
+
             wkbk.SaveAs(filePath)
 
 
             wkbk.Close()
             sheet = Nothing
             wkbk = Nothing
-
-            ' Close Excel.
-
 
             excelApp.Quit()
             excelApp = Nothing
@@ -628,6 +609,7 @@ End Class
 
 
 
+'Die "Vorlage" einer Meldung 
 Public Class HMIAlarms
     Public ID As Integer
     Public Name As String
