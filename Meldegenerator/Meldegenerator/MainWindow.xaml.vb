@@ -559,11 +559,17 @@ Abgebrochen:
 
     Private Sub window_KeyDown(sender As Object, e As Input.KeyEventArgs)
         If e.Key = Key.F1 Then
+            Try
+                Dim Doku As Object = My.Resources.Doku
+                File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
 
-            Dim Doku As Object = My.Resources.Doku
-            File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
+                Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf")
 
-            Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf")
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+
+
         End If
     End Sub
 End Class

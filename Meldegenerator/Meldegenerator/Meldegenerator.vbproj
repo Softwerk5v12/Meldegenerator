@@ -223,7 +223,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Doku.pdf" />
+    <EmbeddedResource Include="Resources\Doku.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\Logo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
