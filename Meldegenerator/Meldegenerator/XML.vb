@@ -72,6 +72,11 @@ Public Class XML
         AddressBit = 7
         ID = CPUnummer * 10000
 
+
+        'TagName bilden (Der HMI Variablen Name)
+        TagName = "Trigger_AT_" & CPUName & "_DB"
+        AddressTag = """" & TagName & DBNummer & """"
+
         'MAB:  Proof Directory file name and open XML file
         Dim XMLFile As XDocument
         _StatusChanged("Load XML")
@@ -150,9 +155,7 @@ Public Class XML
         AddressBitforArray = AddressBit + ((AddressWord) * 16)
 
 
-        TagName = "Trigger_AT_" & CPUName & "_DB"
 
-        AddressTag = """" & TagName & DBNummer & """"
     End Sub
 
     'MAB:  Die start ID für die Jeweilige CPU
