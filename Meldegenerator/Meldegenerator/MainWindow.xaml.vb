@@ -559,10 +559,10 @@ Abgebrochen:
 
     Private Sub window_KeyDown(sender As Object, e As Input.KeyEventArgs)
         If e.Key = Key.F1 Then
-            If Not File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf") Then
-                Dim Doku As Object = My.Resources.Doku
-                File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
-            End If
+
+            Dim Doku As Object = My.Resources.Doku
+            File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
+
             Process.Start(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf")
         End If
     End Sub
