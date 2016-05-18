@@ -108,9 +108,13 @@ Public Class XML
 
 
         'MAB:  rückgabewerte Adresse und Tagname 
-        HMIVariableDatentyp = "Array [0.." & AddressWord & "] Of Word"
-        HMIVariablenName = AddressTag.Replace("""", "")
-
+        If AddressWord > 0 Then
+            HMIVariableDatentyp = "Array [0.." & AddressWord & "] Of Word"
+            HMIVariablenName = AddressTag.Replace("""", "")
+        Else
+            HMIVariableDatentyp = "Array [0..1] Of Word"
+            HMIVariablenName = AddressTag.Replace("""", "")
+        End If
 
         'MAB:  erstellt eine Excel mappe und  Areitsblatt 
         CreateWorkbook()
