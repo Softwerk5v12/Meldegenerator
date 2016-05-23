@@ -82,6 +82,10 @@ Public Class XML
         _StatusChanged("Load XML")
 
 
+        'Ablöschen bei neuer CPU, damit bei öffterem Durchlauf keine Doppelten Werte entstehen
+        Meldungen.Clear()
+        Datentypen.Clear()
+
         'Datentypen auswerten und zur weiteren Verwendung in Container legen
         For Each file As String In Directory.GetFiles(GetFolderPath(SpecialFolder.MyDocuments) & "\Meldegenerator_XML\Datentypen")
             GetDatatyp(file)
