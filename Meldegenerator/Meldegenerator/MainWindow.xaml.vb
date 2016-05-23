@@ -104,11 +104,13 @@ Class MainWindow
 
         If Not OFD.FileName = "" Then
 
+            '            bgw_DoWork(OFD.FileName)
 
             Try
                 bgw.RunWorkerAsync(OFD.FileName)
+
             Catch ex As Exception
-                MsgBox(ex.ToString)
+                ' MsgBox("ProjektÖffnen" & vbNewLine & ex.ToString)
             End Try
 
 
@@ -166,9 +168,6 @@ Class MainWindow
 
 
 
-        Dim Ausgewaehlte_CPU_Objekt As ControllerTarget
-
-        Dim Ausgewaehlte_CPU_Liste As New List(Of ControllerTarget)
 
         'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(30)
@@ -180,26 +179,39 @@ Class MainWindow
 
 
 
-        For Each Device In MyProjekt.Devices
+        Dim Ausgewaehlte_CPU_Liste As New List(Of ControllerTarget)
+        Try
+            For Each _Device In MyProjekt.Devices
 
-            Dim devitemAggregation As IDeviceItemAggregation
-            Dim devitemassosiation As IDeviceItemAssociation
-            Dim devitem As IDeviceItem
+                '  MsgBox(_Device.Name)
+                '     MsgBox(_Device.ConfigObjectTypeName)
 
-            devitemAggregation = Device.DeviceItems
-            devitemassosiation = Device.Elements
+                If Not _Device.ConfigObjectTypeName Like "*Sinamics*" Then
+                    '    MsgBox(_Device.GetAttribute("Typ"))
 
-            'CPUs im Projekt suchen
-            For Each devitem In devitemAggregation
-                If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
 
-                    CPU_Namen.Add(devitem.Name)
-                    Ausgewaehlte_CPU_Liste.Add(devitem)
+                    Dim devitemAggregation As IDeviceItemAggregation
+                    Dim devitemassosiation As IDeviceItemAssociation
+                    Dim devitem As IDeviceItem
 
+                    devitemAggregation = _Device.DeviceItems
+                    devitemassosiation = _Device.Elements
+
+
+                    'CPUs im Projekt suchen
+                    For Each devitem In devitemAggregation
+                        If devitem.TypeName.Contains("CPU") And devitem.Name IsNot vbNullString Then
+                            ' MsgBox(devitem.TypeName)
+                            CPU_Namen.Add(devitem.Name)
+                            Ausgewaehlte_CPU_Liste.Add(devitem)
+
+                        End If
+                    Next
                 End If
             Next
-        Next
-
+        Catch ex As Exception
+            MsgBox(ex.Message)
+        End Try
 
         'Report ausgeben, prüfen ob abgebrochen wurde
         bgw.ReportProgress(40)
@@ -237,8 +249,8 @@ Class MainWindow
 
         Übergabeparameter.Clear()
 
+        Dim Ausgewaehlte_CPU_Objekt As ControllerTarget
         Ausgewaehlte_CPU_Objekt = Ausgewaehlte_CPU_Liste.ElementAt(CPU_Nr)
-
 
 
 
@@ -289,29 +301,31 @@ Class MainWindow
         Dim Bausteinordner As ProgramblockSystemFolder
 
 
+        Try
+            Bausteinordner = Ausgewaehlte_CPU_Objekt.ProgramblockFolder
 
-        Bausteinordner = Ausgewaehlte_CPU_Objekt.ProgramblockFolder
+            For Each Baustein In Bausteinordner.Blocks
 
-        For Each Baustein In Bausteinordner.Blocks
+                If Baustein.Name = "Meldungen" Then
+                    If Baustein.IsConsistent Then
+                        Try
+                            Baustein.Export(XML_pfad & "\" & Baustein.Name & ".xml", ExportOptions.None)
 
-            If Baustein.Name = "Meldungen" Then
-                If Baustein.IsConsistent Then
-                    Try
-                        Baustein.Export(XML_pfad & "\" & Baustein.Name & ".xml", ExportOptions.None)
-
-                    Catch ex As Exception
-                        MsgBox(ex.ToString)
-                    End Try
-                Else
-                    MsgBox("Meldebaustein nicht übersetzt")
-                    Abbruch = True
+                        Catch ex As Exception
+                            MsgBox(ex.ToString)
+                        End Try
+                    Else
+                        MsgBox("Meldebaustein nicht übersetzt")
+                        Abbruch = True
+                    End If
+                    Err_Meldebaustein = False
+                    generiere_excel.DBNummer = Baustein.Number
                 End If
-                Err_Meldebaustein = False
-                generiere_excel.DBNummer = Baustein.Number
-            End If
 
-        Next
-
+            Next
+        Catch ex As Exception
+            MsgBox("Bausteinordner lesen " & vbNewLine & ex.Message)
+        End Try
         If Err_Meldebaustein Then
             MsgBox("Kein Meldebaustein im Programm-Ordner gefunden. Bitte Baustein 'Meldungen' im Bausteinordner (ohne Unterordner) anlegen ")
             Abbruch = True
@@ -446,6 +460,7 @@ Abgebrochen:
                     CPUA.ShowDialog()
                     Übergabeparameter.Add(CPUA.Rückgabe)
                 Else
+
                     Übergabeparameter.Add(0)
                 End If
 
