@@ -33,6 +33,7 @@ Public Class XML
     Property HMIVariableDatentyp As String = ""
     Property HMIVariablenName As String = ""
 
+    Property inWords As Boolean
 
 
 
@@ -55,7 +56,7 @@ Public Class XML
     Private AddressBitforArray As Integer
     Private AddressTag As String
 
-
+    Dim TempADTAG As String
     ''' <summary>
     ''' MBA:
     ''' Runs XML read and Excel erstellen
@@ -76,7 +77,7 @@ Public Class XML
         'TagName bilden (Der HMI Variablen Name)
         TagName = "Trigger_AT_" & CPUName & "_DB"
         AddressTag = """" & TagName & DBNummer & """"
-
+        TempADTAG = AddressTag
         'MAB:  Proof Directory file name and open XML file
         Dim XMLFile As XDocument
         _StatusChanged("Load XML")
@@ -159,8 +160,14 @@ Public Class XML
 
         End If
 
+        If inWords = False Then
+            AddressBitforArray = AddressBit + ((AddressWord) * 16)
 
-        AddressBitforArray = AddressBit + ((AddressWord) * 16)
+        Else
+            AddressBitforArray = AddressBit
+            AddressTag = TempADTAG & "[" & AddressWord & "]"
+        End If
+
 
 
 
@@ -542,8 +549,12 @@ Public Class XML
         Dim i As Integer = 1
         sheet.Cells(1, 1) = Column0_A
         sheet.Cells(1, 2) = Column1_B
+        If inWords = False Then
+            sheet.Cells(1, 3) = Column2_C
+        Else
+            sheet.Cells(1, 3) = "Alarm text [de-DE], Alarm text 1"
+        End If
 
-        sheet.Cells(1, 3) = Column2_C
         sheet.Cells(1, 4) = Column3_D
         sheet.Cells(1, 5) = Column4_E
         sheet.Cells(1, 6) = Column5_F

@@ -11,6 +11,7 @@
         <StackPanel Orientation="Vertical">
             <Label Margin="0,0,0,-10" VerticalAlignment="Top" HorizontalAlignment="Right" Content="{Binding Version, ElementName=window}"></Label>
             <Image x:Name="image" Height="41" Source="Resources/Logo.png"/>
+            <CheckBox Name="CB_inWords" Unchecked="CB_inWords_Unchecked" Checked="CB_inWords_Checked" >in Words (only RT Professional)</CheckBox>
             <WrapPanel x:Name="WPMain">
                 <Button x:Name="ProjektÖffnen" Click="ProjektÖffnen_Click" Width="100" Height="70" Margin="10" BorderBrush="Gray" Background="LightGreen" Content="Öffne Projekt"/>
                 <Button x:Name="Ordner_öffnen" Click="Ordner_öffnen_Click" Content="Ordner öffnen" Width="100" Height="70" Margin="10"/>

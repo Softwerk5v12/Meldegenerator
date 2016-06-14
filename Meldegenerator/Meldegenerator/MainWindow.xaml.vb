@@ -22,8 +22,6 @@ Class MainWindow
 
 
 
-
-
     Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
 
 
@@ -39,6 +37,14 @@ Class MainWindow
 
     End Sub
 
+    Private Sub CB_inWords_Unchecked(sender As Object, e As RoutedEventArgs)
+        generiere_excel.inWords = CB_inWords.IsChecked
+
+    End Sub
+
+    Private Sub CB_inWords_Checked(sender As Object, e As RoutedEventArgs)
+        generiere_excel.inWords = CB_inWords.IsChecked
+    End Sub
 
 
     Function MyResolveEventHandler(ByVal sender As Object,
@@ -106,12 +112,12 @@ Class MainWindow
 
             '            bgw_DoWork(OFD.FileName)
 
-            Try
-                bgw.RunWorkerAsync(OFD.FileName)
+            ' Try
+            bgw.RunWorkerAsync(OFD.FileName)
 
-            Catch ex As Exception
-                ' MsgBox("ProjektÖffnen" & vbNewLine & ex.ToString)
-            End Try
+            'Catch ex As Exception
+            ' MsgBox("ProjektÖffnen" & vbNewLine & ex.ToString)
+            'End Try
 
 
 
@@ -593,5 +599,6 @@ Abgebrochen:
 
         End If
     End Sub
+
 End Class
 
