@@ -267,18 +267,22 @@ Public Class XML
                     'Die Elemente im Node Struct "holen"
                     Dim StructElement = (From element In Meldung.Nodes Select element)
 
-                    For i As Integer = 1 To StructElement.Count - 1
-                        CountDBAdresse()
+                    For i As Integer = 0 To StructElement.Count - 1
                         Dim StructMeldung As XElement = StructElement.ElementAt(i)
+                        If StructMeldung.HasAttributes = True Then
 
-                        'Werte hinzufügen
-                        Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
+
+                            CountDBAdresse()
+
+
+                            'Werte hinzufügen
+                            Meldungen.Add(New HMIAlarms With {.AlarmText = MeldungStructName & " " & StructMeldung.Descendants(SiemensNamespace + "MultiLanguageText").Value,
                          .Meldeklasse = Meldeklassenname, .Name = Meldung.FirstAttribute.Value & ID, .Datentyp = StructMeldung.@Datatype.ToString,
                         .ID = ID, .TriggerTag = AddressTag, .TrigerBit = AddressBitforArray})
-                        ID = ID + 1
+                            ID = ID + 1
 
-                        Meldungcounter = Meldungcounter + 1
-
+                            Meldungcounter = Meldungcounter + 1
+                        End If
                     Next
 
 

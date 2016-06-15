@@ -597,8 +597,11 @@ Abgebrochen:
             End Try
 
 
+        ElseIf Keyboard.IsKeyDown(Key.X) = True And Keyboard.IsKeyDown(Key.LeftCtrl) = True And Keyboard.IsKeyDown(Key.LeftShift) = True Then
+            generiere_excel.RunXML()
         End If
     End Sub
+
 
 End Class
 
