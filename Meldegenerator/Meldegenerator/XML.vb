@@ -71,7 +71,7 @@ Public Class XML
         'MBA:  Neue Startwerte zuweisen (nötig bei mehreren CPUs)
         AddressWord = -1
         AddressBit = 7
-        ID = CPUnummer * 10000
+        ID = CPUnummer * 5000
 
 
         'TagName bilden (Der HMI Variablen Name)
