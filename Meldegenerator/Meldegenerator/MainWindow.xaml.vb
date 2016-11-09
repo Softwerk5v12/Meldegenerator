@@ -103,7 +103,9 @@ Class MainWindow
     '  Dim _xml As New XML
 
     Private Sub ProjektÖffnen_Click(sender As Object, e As RoutedEventArgs)
-        Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA files (*.ap13)|*.ap13"}
+        '  Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = False, .Filter = "TIA Projekt V13, V14 |*.ap13;*.ap14"}
+        Dim OFD As New System.Windows.Forms.OpenFileDialog With {.Multiselect = True, .Filter = "TIA V13 Projekt|*.ap13| TIA V14 Projekt|*.ap14"}
+
 
         OFD.ShowDialog()
 
@@ -581,6 +583,10 @@ Abgebrochen:
     Private Sub window_KeyDown(sender As Object, e As Input.KeyEventArgs)
         If e.Key = Key.F1 Then
             Try
+                If Not System.IO.Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms") Then
+                    System.IO.Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms")
+                End If
+
                 Dim Doku As Object = My.Resources.Doku
                 File.WriteAllBytes(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) & "\Meldegenerator_HMI_Alarms\Doku.pdf", Doku)
 
